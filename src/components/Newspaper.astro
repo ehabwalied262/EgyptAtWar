@@ -1,0 +1,41 @@
+---
+let email = '';
+let submitted = false;
+
+if (Astro.request.method === "POST") {
+  const formData = await Astro.request.formData();
+  email = formData.get("email")?.toString() || '';
+  if (email) {
+    // Simulate form submission (replace with actual API call)
+    console.log('Submitting email:', email);
+    submitted = true;
+  }
+}
+---
+
+<div class="bg-darkBackground text-blank py-16">
+  <div class="container mx-auto px-4 flex flex-col items-center">
+    <h2 class="text-3xl font-bold mb-4">ابق على اطلاع | Stay Updated</h2>
+    <p class="text-center mb-8">
+      Subscribe to our newsletter for the latest analyses and articles.
+    </p>
+    <form method="POST" class="flex flex-col md:flex-row items-center gap-4">
+      <input
+        type="email"
+        name="email"
+        placeholder="أدخل بريدك الإلكتروني | Enter your email"
+        value={email}
+        class="px-4 py-2 rounded-lg border-2 border-primary focus:outline-none focus:border-red-700 w-full md:w-3/4 max-w-4xl"
+      />
+      <button
+        type="submit"
+        class="bg-primary hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg whitespace-nowrap"
+      >
+        اشترك | Subscribe
+      </button>
+    </form>
+    {submitted && (
+      <p class="text-green-500 mt-4">Thank you for subscribing!</p>
+    )}
+  </div>
+</div>

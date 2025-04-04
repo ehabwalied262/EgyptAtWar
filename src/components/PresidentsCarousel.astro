@@ -1,0 +1,135 @@
+---
+const presidents = [
+  { 
+    nameAr: "محمد نجيب", 
+    nameEn: "naguib", 
+    img: "/naguib.jpg", 
+    years: "1953-1954" 
+  },
+  { 
+    nameAr: "جمال عبد الناصر", 
+    nameEn: "nasser", 
+    img: "/nasser.jpg", 
+    years: "1956-1970" 
+  },
+  { 
+    nameAr: "أنور السادات", 
+    nameEn: "sadat", 
+    img: "/sadat.jpg", 
+    years: "1970-1981" 
+  },
+  { 
+    nameAr: "حسني مبارك", 
+    nameEn: "mubarak", 
+    img: "/mubarak.jpg", 
+    years: "1981-2011" 
+  },
+  { 
+    nameAr: "محمد مرسي", 
+    nameEn: "morsi", 
+    img: "/morsi.jpg", 
+    years: "2012-2013" 
+  },
+  { 
+    nameAr: "عبد الفتاح السيسي", 
+    nameEn: "sisi", 
+    img: "/sisi.jpg", 
+    years: "2014-Present" 
+  },
+];
+---
+<section class="carousel-container relative max-w-full overflow-hidden bg-black text-white py-12">
+  <!-- Header Section -->
+  <header class="text-center mb-8">
+    <h1 class="text-3xl font-bold text-white">رؤساء مصر</h1>
+  </header>
+  <!-- Swiper Container -->
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      {presidents.map((president) => (
+      <div class="swiper-slide flex-shrink-0 w-64 h-64 mx-2">
+        <a href={`/president/${encodeURIComponent(president.nameEn)}`} 
+          class="block w-full h-full"
+        >
+          <div class="carousel-slide-content relative rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-95 h-full">
+            <img
+              src={president.img}
+              alt={president.nameAr}
+              class="carousel-image w-full h-full object-cover"
+            />
+            <div class="carousel-text absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4 text-center">
+              <h3 class="carousel-title font-semibold truncate">{president.nameAr}</h3>
+              <p class="carousel-years text-sm">{president.years}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import Swiper from 'swiper';
+  import { Autoplay } from 'swiper/modules';
+  import 'swiper/css';
+  import 'swiper/css/autoplay';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const swiper = new Swiper('.mySwiper', {
+      modules: [Autoplay],
+      slidesPerView: 4,
+      spaceBetween: 16,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      // loop: false, // تم إزالة الـ loop
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+        },
+        1024: {
+          slidesPerView: 4,
+        },
+      },
+    });
+
+    // إضافة منطق مخصص للرجوع للبداية بعد الوصول للنهاية
+    swiper.on('reachEnd', () => {
+      setTimeout(() => {
+        swiper.slideTo(0, 0); // الرجوع للأول بدون animation
+        swiper.autoplay.start(); // إعادة تشغيل الـ autoplay
+      }, 3000); // نفس مدة الـ delay
+    });
+  });
+</script>
+
+<style>
+  .swiper-slide {
+    width: 256px !important; /* عرض ثابت لكل كارت */
+    height: 256px !important; /* ارتفاع ثابت لكل كارت */
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+  .carousel-slide-content {
+    width: 100%;
+    height: 100%;
+  }
+  .carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* التأكد من أن الصورة متساوية وما تتشوهش */
+  }
+  .carousel-text {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .carousel-title,
+  .carousel-years {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>

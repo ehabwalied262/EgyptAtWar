@@ -1,0 +1,202 @@
+---
+import ProblemCard from './ProblemCard.astro';
+
+const problems =[
+      {
+        "title": "الفقر",
+        "description": "يعيش ملايين المصريين تحت خط الفقر، مما يجعلهم غير قادرين على تلبية احتياجاتهم الأساسية مثل الغذاء، السكن، والرعاية الصحية.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "التعليم",
+        "description": "يعاني النظام التعليمي في مصر من ضعف المناهج، قلة الموارد، وطرق التدريس التقليدية التي لا تواكب متطلبات العصر.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "ضرب الأطفال",
+        "description": "العنف ضد الأطفال ممارسة شائعة في البيوت والمدارس، مما يؤثر سلبًا على صحتهم النفسية وقدراتهم على بناء شخصيات سوية.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "سوء التغذية",
+        "description": "يعاني قطاع واسع من المصريين، خاصة الأطفال، من نقص العناصر الغذائية الأساسية، مما يؤدي إلى مشكلات صحية مزمنة.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "التربية",
+        "description": "أزمة في أساليب التربية الحديثة، حيث يعتمد الكثيرون على القمع والتخويف بدلاً من الحوار والتوجيه.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "الإدمان",
+        "description": "يدفع اليأس كثيرين إلى إدمان المخدرات، السوشيال ميديا، أو الإباحية، هربًا من الواقع، مما يزيد المشكلات بدلًا من حلها.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "المتشردين",
+        "description": "انتشار ظاهرة الأطفال المشردين في الشوارع يمثل أزمة اجتماعية خطيرة، حيث يصبحون عرضة للاستغلال والإدمان والجريمة.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "عجز الميزان التجاري",
+        "description": "ارتفاع حجم الواردات مقارنة بالصادرات، مما يضغط على الاقتصاد ويؤدي إلى تفاقم مشكلة الديون.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "البطالة",
+        "description": "نسبة بطالة مرتفعة، خاصة بين الشباب وخريجي الجامعات، بسبب عدم توافق التعليم مع احتياجات سوق العمل.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "الإعلام المضلل",
+        "description": "سيطرة الإعلام غير المهني على عقول الكثيرين من خلال نشر الأخبار الكاذبة والمحتوى الموجه.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "غياب المحتوى الهادف",
+        "description": "افتقار وسائل الإعلام والفن والثقافة إلى تقديم محتوى تعليمي وتوعوي وترفيهي ذي قيمة.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "الفهم الخاطئ للدين",
+        "description": "انتشار تفسير خاطئ للتعاليم الدينية، مما يؤدي إلى التشدد أو الانحراف، ويؤثر على الحياة الاجتماعية.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "الفساد الإداري والرشوة",
+        "description": "تأثير الفساد على كفاءة المؤسسات العامة وضعف الخدمات المقدمة للمواطنين.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "أزمة السكن والعشوائيات",
+        "description": "معاناة الملايين من السكن غير الآمن في المناطق العشوائية التي تفتقر إلى الخدمات الأساسية.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "ضعف الخدمات الصحية",
+        "description": "نقص حاد في المستشفيات والأدوية والأطباء، مع تدهور مستوى الرعاية الصحية.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "الزيادة السكانية",
+        "description": "معدلات النمو السكاني المرتفعة تضغط على الموارد الاقتصادية والخدمات العامة.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "هجرة العقول",
+        "description": "هجرة العلماء والمهندسين والأطباء بحثًا عن فرص أفضل بالخارج، مما يحرم البلاد من كفاءاتها.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "ضعف البحث العلمي",
+        "description": "ضعف الإنفاق على البحث العلمي، وعدم ربطه بالصناعة والاقتصاد، مما يؤدي إلى تأخر الابتكار.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "العنوسة وتأخر الزواج",
+        "description": "تأخر الكثير من الشباب عن الزواج بسبب الظروف الاقتصادية الصعبة وارتفاع تكاليف الزواج.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "ضعف الهوية الثقافية",
+        "description": "تأثيرات ثقافية خارجية تضعف الانتماء للهوية الوطنية، مع تراجع الاهتمام بالتراث الثقافي.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "المرور والفوضى المرورية",
+        "description": "اختلالات مرورية حادة نتيجة سوء التخطيط العمراني، وعدم احترام القوانين.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "التحرش والعنف ضد المرأة",
+        "description": "انتشار ظاهرة التحرش والعنف الأسري، مما يؤثر على أمان المرأة وحريتها.",
+        "image": "/egypt-map.png"
+      },
+      {
+        "title": "أزمة المياه والتصحر",
+        "description": "نقص الموارد المائية يهدد الزراعة والمياه الصالحة للشرب، مع تفاقم مشكلة التصحر.",
+        "image": "/egypt-map.png"
+      }
+    ]
+    
+---
+
+<section class="bg-black text-white py-12 relative">
+  <div class="container mx-auto px-4">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {problems.map((problem) => (
+          <div class="swiper-slide">
+            <ProblemCard 
+              title={problem.title}
+              description={problem.description}
+              image={problem.image}
+            />
+          </div>
+        ))}
+      </div>
+      <div class="swiper-pagination !relative !mt-8"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import Swiper from 'swiper';
+  import { Pagination, Autoplay } from 'swiper/modules';
+  import 'swiper/css';
+  import 'swiper/css/pagination';
+  import 'swiper/css/autoplay';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      new Swiper('.mySwiper', {
+        modules: [Pagination, Autoplay],
+        slidesPerView: 3,
+        spaceBetween: 10,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+          bulletClass: 'swiper-pagination-bullet !bg-white !opacity-100',
+          bulletActiveClass: 'swiper-pagination-bullet-active !bg-blue-500',
+        },
+        breakpoints: {
+          640: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
+        },
+      });
+    }, 100);
+  });
+</script>
+
+<style>
+  .swiper-slide {
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+  }
+  .swiper-pagination {
+    position: relative;
+    margin-top: 20px;
+  }
+  .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    margin: 0 6px !important;
+    background: white;
+    opacity: 1;
+  }
+  .swiper-pagination-bullet-active {
+    background: #3b82f6;
+  }
+  .swiper {
+    padding: 0 10px;
+  }
+</style>

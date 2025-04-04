@@ -1,0 +1,45 @@
+---
+import LibraryFilterBar from '../components/LibraryFilterBar.astro';
+import NavBar from '../components/NavBar.astro';
+import LibraryHeroSection from '../components/LibraryHeroSection.astro';
+import LibraryFeaturedGrid from '../components/LibraryFeaturedGrid.astro';
+import Sidebar from '@/components/Sidebar.astro';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Figures Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  </head>
+  <body class="bg-darkBackground text-white min-h-screen">
+    <!-- NavBar -->
+    <NavBar />
+
+    <div class="flex min-h-screen">
+      <!-- Sidebar: Fixed width (e.g., 1/4 of screen) -->
+      <div class="w-1/4 flex-shrink-0">
+        <Sidebar />
+      </div>
+      
+      <!-- Main Content Area: Takes remaining width -->
+      <div class="flex-1 flex flex-col">
+        <!-- Hero Section: Full width of main content -->
+        <div class="w-full">
+          <LibraryHeroSection />
+        </div>
+        
+        <!-- Filter Bar: Below Hero, full width -->
+        <div class="w-full">
+          <LibraryFilterBar />
+        </div>
+        
+        <!-- Featured Grid: Below Filter Bar, full width -->
+        <div class="w-full flex-1">
+          <LibraryFeaturedGrid />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

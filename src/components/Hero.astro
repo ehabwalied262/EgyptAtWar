@@ -1,0 +1,106 @@
+
+
+<section class="hero-section">
+  <div class="overlay">
+    <h1 class="hero-title">لماذا نحن متخلفون؟</h1>
+    <div class="typewriter-container">
+      <span class="typewriter-text" id="typewriter"></span>
+      <span class="cursor"></span>
+    </div>
+    <button class="cta-button bg-white text-black font-semibold py-2 px-4 rounded hover:bg-gray-200 transition duration-300">
+      استكشف دورك في الإصلاح
+    </button>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    width: 100%;
+    height: 100vh;
+    background-image: url('/hero-image.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    direction: rtl;
+  }
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .hero-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+  }
+  .typewriter-container {
+    display: flex;
+    align-items: center;
+    min-height: 2em; /* Ensures the container maintains height even when text is empty */
+  }
+  .typewriter-text {
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+    display: inline-block;
+  }
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.5rem;
+    background-color: white;
+    vertical-align: middle;
+    animation: blink 0.7s infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+</style>
+
+<script>
+const phrases = [
+  "بنقول الزمن اتغير وننسى إن إحنا اللي واقفين",
+  "عشان بنشوف الغلط في كل حاجة إلا فينا",
+  "عشان بنخاف من اللي بيقول حاجة غير اللي اتعلمناه",
+  "عشان بنشوف الحل في الماضي والمشكلة في كل حاجة تانية",
+  "عشان بنشوف الغلط ف غيرنا وبننسى دورنا",
+  "عشان نرتاح بنشاور ع الأسوأ مننا، لما كل ده يتعدل نبقى نعدل من نفسنا"
+];
+
+  function type(
+    typewriterElement: HTMLElement,
+    phrases: string[],
+    phraseIndex: number,
+    charIndex: number,
+    isDeleting: boolean
+  ): void {
+    const currentPhrase = phrases[phraseIndex];
+    typewriterElement.textContent = currentPhrase.substring(0, charIndex);
+
+    if (!isDeleting && charIndex < currentPhrase.length) {
+      setTimeout(() => type(typewriterElement, phrases, phraseIndex, charIndex + 1, false), 100);
+    } else if (isDeleting && charIndex > 0) {
+      setTimeout(() => type(typewriterElement, phrases, phraseIndex, charIndex - 1, true), 50);
+    } else if (!isDeleting && charIndex === currentPhrase.length) {
+      setTimeout(() => type(typewriterElement, phrases, phraseIndex, charIndex, true), 2000);
+    } else if (isDeleting && charIndex === 0) {
+      const nextPhraseIndex = (phraseIndex + 1) % phrases.length;
+      setTimeout(() => type(typewriterElement, phrases, nextPhraseIndex, 0, false), 500);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const typewriterElement = document.getElementById("typewriter");
+    if (typewriterElement) {
+      type(typewriterElement, phrases, 0, 0, false);
+    } else {
+      console.error("Typewriter element not found!");
+    }
+  });
+</script>

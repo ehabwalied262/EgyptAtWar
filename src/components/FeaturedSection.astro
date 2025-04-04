@@ -1,0 +1,88 @@
+---
+import ProblemCard from "./ProblemCard.astro";
+import ProblemsCarousal from "./ProblemsCarousal.astro";
+
+
+---
+
+<!-- Section 1: Map and Main Content -->
+<section class="bg-blank py-12">
+  <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
+    <!-- Map Image -->
+    <div class="w-full md:w-1/2 flex-shrink-0">
+      <img src="/egypt-map.png" alt="Egypt Map" class="w-full h-auto rounded-lg shadow-md" />
+    </div>
+  
+    <!-- Main Content -->
+    <div class="w-full md:w-1/2 flex flex-col gap-4">
+      <div class="flex justify-between items-center">
+        
+        <h2 class="text-2xl sm:text-3xl md:text-3xl font-bold uppercase text-gray-600">
+          Unraveling the Charted Path: Egypt’s Turbulent Journey
+        </h2>
+      </div>
+  
+      <p class="text-gray-600 leading-relaxed">
+        Confronting the Consequences: How the Camp David Accords Have Devastated Egypt’s Economy, Military Might, and Social Fabric. Explore the complex web of political, economic, and social dynamics that have emerged in the wake of this contentious agreement.
+      </p>
+  
+      <p class="text-gray-600 leading-relaxed">
+        Uncovering the Hidden Crisis: The Lasting Impact of the Camp David Accords on Egypt’s Future.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="bg-blank py-12">
+  <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+  {/* Left Column */}
+{/* Left Column */}
+<article class="text-gray-600 flex flex-col justify-between h-full text-right">
+  <div>
+
+    <!-- Title -->
+    <h3 class="mt-2 text-xl sm:text-2xl md:text-3xl font-semibold uppercase mb-4 text-amiri">
+      نتبنى رؤية جديدة
+    </h3>
+
+    <!-- Description -->
+    <p class="mb-4 text-amiri">
+     <strong>مواجهة الحقيقة:</strong> إزاي الأفكار القديمة عطلت تقدمنا.
+      <br> مشاكل مصر سببها <strong>الجمود الفكري</strong> وقلة الشجاعة في مواجهة أخطائنا. لازم نراجع نفسنا ونبطل نلوم اللي برا بس ونشوف ايه بإيدينا كأفراد نغيره.
+    </p>
+  </div>
+</article>
+
+
+{/* Right Column */}
+<article class="text-gray-600 flex flex-col justify-between h-full text-right">
+  <div>
+    <!-- Title -->
+    <h3 class="text-xl sm:text-2xl md:text-3xl font-semibold uppercase mb-4 text-amiri">
+      محاولات عملية للتغيير
+    </h3>
+
+    <!-- List (without bullet points) -->
+    <div class="mr-6 text-amiri">
+      <p><strong>نغير الرواية:</strong> نبطل نلوم الغير ونواجه مشاكلنا في الحكم والتعليم والثقافة.</p>
+      <p><strong>نرسم طريق جديد:</strong> نفتح المجال للتفكير الحر والتنوع ونركز على الابتكار عشان نبني اقتصاد ومجتمع قوي.</p>
+      <p><strong>نستعيد مستقبل مصر:</strong> نمزج بين تراثنا والحداثة، ونركز على التفكير النقدي والانفتاح عشان نرجع مصر للريادة.</p>
+    </div>        
+  </div>
+</article>
+
+  </div>
+</section>
+
+<!-- Three Sections -->
+<ProblemsCarousal />
+
+<!-- Mobile Button -->
+<div class="md:hidden mt-8 text-center">
+  <a 
+    href="/accountability" 
+    class="bg-transparent border border-white text-white px-6 py-2 uppercase hover:bg-white hover:text-black transition-colors duration-300"
+  >
+    Demand Accountability
+  </a>
+</div>

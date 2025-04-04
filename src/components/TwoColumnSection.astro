@@ -1,0 +1,56 @@
+---
+// Component Props
+export interface Props {
+  title: string; // Main title
+  description: string; // Main description
+  buttonText: string; // Button text
+  secondaryTitle: string; // Secondary title
+  secondaryDescription: string; // Secondary description
+  imageSrc: string; // Source of the image (e.g., "/public/egypt-map.png")
+}
+
+const props: Props = {
+  title: "Unraveling the Consequences of Camp David's",
+  description: "Egypt's Struggle: From Nasser to Sisi, a Turbulent Narrative of Economic, Military, and Social Upheaval in the Wake of the Camp David Accords. Dive into the dark underbelly of this contentious agreement and its far-reaching impacts.",
+  buttonText: "Take Action: Demand Change",
+  secondaryTitle: "The Burden of Compromise",
+  secondaryDescription: "Navigating the Alternatives: How the Camp David Accords Have Reshaped Egypt's Landscape",
+  imageSrc: "/egypt-map.png", // Replace with the actual image path
+};
+---
+
+<!-- Section Container -->
+<section class="bg-white py-12">
+  <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+
+    <!-- Left Column -->
+    <div class="w-full md:w-1/2 mb-8 md:mb-0">
+    <div class="flex flex-col items-start mb-4">
+        <span class="bg-red-700 text-white px-2 py-1 rounded-lg">Explore</span>
+        <h2 class="text-red-700 text-3xl font-bold mt-2">{props.title}</h2>
+    </div>
+
+      <p class="text-gray-600 mb-6">
+        {props.description}
+      </p>
+
+      <button class="bg-red-500 text-white px-6 py-2 uppercase hover:bg-red-600 transition-colors duration-300">
+        {props.buttonText}
+      </button>
+
+      <div class="mt-8">
+        <h3 class="text-xl font-semibold uppercase mb-2 text-red-700">
+          {props.secondaryTitle}
+        </h3>
+        <p class="text-gray-600">
+          {props.secondaryDescription}
+        </p>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="w-full md:w-1/2">
+      <img src={props.imageSrc} alt="Person on Egypt Map" class="w-full h-auto object-cover rounded-lg" />
+    </div>
+  </div>
+</section>

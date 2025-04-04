@@ -1,0 +1,86 @@
+---
+let message = '';
+let submitted = false;
+
+if (Astro.request.method === "POST") {
+  const formData = await Astro.request.formData();
+  message = formData.get("message")?.toString() || '';
+  if (message) {
+    // Simulate form submission (replace with actual API call)
+    console.log('Submitting message:', message);
+    submitted = true;
+  }
+}
+---
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<div class="bg-gray-800 text-white p-8">
+  <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+    {/* Contact Us */}
+    <div>
+      <h3 class="text-xl font-bold mb-4">Contact Us | اتصل بنا</h3>
+      <p class="mb-4">Share your thoughts | شارك أفكارك</p>
+      <form method="POST" class="flex flex-col gap-2">
+        <textarea
+          name="message"
+          placeholder="Your message..."
+          class="p-2 border border-gray-500 rounded-md resize-none min-h-[100px]"
+        >{message}</textarea>
+        <button
+          type="submit"
+          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
+        >
+          Submit | إرسال
+        </button>
+      </form>
+      {submitted && (
+        <p class="text-green-500 mt-4">Thank you for your message!</p>
+      )}
+    </div>
+
+    {/* Quick Links */}
+    <div>
+      <h3 class="text-xl font-bold mb-4">Quick Links | روابط سريعة</h3>
+      <ul class="list-none">
+        <li class="mb-2">
+          <a href="/about" class="text-red-500 hover:text-red-700">
+            About Us | معلومات عنا
+          </a>
+        </li>
+        <li class="mb-2">
+          <a href="/resources" class="text-red-500 hover:text-red-700">
+            Resources | مصادر
+          </a>
+        </li>
+        <li class="mb-2">
+          <a href="/documentation" class="text-red-500 hover:text-red-700">
+            Documentation | وثائق
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    {/* Follow Us */}
+    <div>
+      <h3 class="text-xl font-bold mb-4">Follow Us | تابعنا</h3>
+      <div class="flex gap-4">
+        <a href="https://x.com/" target="_blank" rel="noopener noreferrer">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a href="https://tiktok.com/" target="_blank" rel="noopener noreferrer">
+          <i class="fa-brands fa-tiktok"></i>
+        </a>
+        <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer">
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  {/* Copyright */}
+  <div class="bg-gray-900 text-white text-center py-4 mt-8">
+    <p>© 2025 EGYPT AT WAR | All rights reserved | جميع الحقوق محفوظة</p>
+  </div>
+</div>

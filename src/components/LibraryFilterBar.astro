@@ -1,0 +1,45 @@
+---
+const filterItems = [
+  "Zionism",
+  "History",
+  "Psychology",
+  "Nutrition & Health",
+  "Politics",
+  "Educational",
+
+];
+---
+
+<div class="bg-background text-white p-4 flex space-x-4" id="filterBar">
+  {filterItems.map((item, index) => (
+    <div 
+      class="border border-white/50 px-3 py-1 rounded-md cursor-pointer hover:bg-blank hover:text-darkBackground" 
+      data-index={index}
+    >
+      {item}
+    </div>
+  ))}
+</div>
+
+<script define:vars={{ filterBarId: 'filterBar' }} type="module">
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterBar = document.getElementById(filterBarId);
+    const items = filterBar.querySelectorAll('div');
+    
+    // Set the first item as active by default
+    if (items.length > 0) {
+      items[0].classList.add('bg-blank', 'text-darkBackground');
+    }
+    
+    items.forEach(item => {
+      item.addEventListener('click', function() {
+        // Remove styling from all items
+        items.forEach(i => {
+          i.classList.remove('bg-blank', 'text-darkBackground');
+        });
+        // Add styling to clicked item
+        this.classList.add('bg-blank', 'text-darkBackground');
+      });
+    });
+  });
+</script>

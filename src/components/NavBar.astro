@@ -1,0 +1,95 @@
+---
+const links = [
+  { name: "Home", href: "/" },
+  { name: "Presidents", href: "/presidents" },
+  { name: "Library", href: "/library" },
+  { name: "Global Comparisons", href: "/comparisons" },
+  { name: "Articles", href: "/articles" },
+  { name: "About Us", href: "/about" },
+];
+---
+
+<nav class="text-white py-4 px-6 bg-darkBackground">
+  <div class="container mx-auto flex justify-between items-center">
+    <a href="/" class="text-2xl font-bold">Egypt At War</a>
+    
+    {/* Burger Icon - Hidden on large screens */}
+    <button 
+      class="md:hidden text-3xl focus:outline-none" 
+      aria-label="Toggle Menu"
+      id="menu-toggle"
+    >
+      ☰
+    </button>
+
+    {/* Navigation Links for Desktop */}
+    <ul class="hidden md:flex md:space-x-6 md:items-center">
+      {links.map((link) => (
+        <li>
+          <a href={link.href} class="hover:text-gray-300">
+            {link.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  {/* Sidebar for Mobile */}
+  <div 
+    class="fixed inset-y-0 right-0 w-64 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden z-50" 
+    id="mobile-sidebar"
+  >
+    <ul class="flex flex-col h-full space-y-6 p-6 text-white">
+      {links.map((link) => (
+        <li>
+          <a href={link.href} class="hover:text-gray-300 text-lg">
+            {link.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  {/* Overlay for closing sidebar when clicking outside */}
+  <div 
+    class="fixed inset-0 bg-black/50 hidden z-40" 
+    id="overlay"
+  ></div>
+</nav>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileSidebar = document.getElementById("mobile-sidebar");
+    const overlay = document.getElementById("overlay");
+
+    // Ensure all required elements exist before proceeding
+    if (!menuToggle || !mobileSidebar || !overlay) {
+      console.error("Required DOM elements are missing.");
+      return;
+    }
+
+    // Menu toggle functionality
+    menuToggle.addEventListener("click", () => {
+      mobileSidebar.classList.toggle("translate-x-full");
+      overlay.classList.toggle("hidden");
+      menuToggle.textContent = mobileSidebar.classList.contains("translate-x-full") ? "☰" : "✕";
+    });
+
+    // Close sidebar when clicking overlay
+    overlay.addEventListener("click", () => {
+      mobileSidebar.classList.add("translate-x-full");
+      overlay.classList.add("hidden");
+      menuToggle.textContent = "☰";
+    });
+
+    // Close sidebar when clicking a link
+    mobileSidebar.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileSidebar.classList.add("translate-x-full");
+        overlay.classList.add("hidden");
+        menuToggle.textContent = "☰";
+      });
+    });
+  });
+</script>

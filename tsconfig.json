@@ -1,5 +1,22 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "jsx": "react-jsx", // Enable JSX support for React
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["react", "react-dom"], // Explicitly include React types
+    "typeRoots": ["./node_modules/@types"] // Ensure TypeScript looks for types in node_modules/@types
+  },
+  "include": ["src/**/*", "components/**/*", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
