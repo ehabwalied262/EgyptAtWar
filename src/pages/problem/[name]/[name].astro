@@ -1,34 +1,40 @@
 ---
-const articles = [
-  {
-    "title": "الفقر",
-    "description": "يعيش ملايين المصريين تحت خط الفقر، مما يجعلهم غير قادرين على تلبية احتياجاتهم الأساسية مثل الغذاء، السكن، والرعاية الصحية.",
-    "image": "/egypt-map.png"
-  },
-  {
-    "title": "التعليم",
-    "description": "يعاني النظام التعليمي في مصر من ضعف المناهج، قلة الموارد، وطرق التدريس التقليدية التي لا تواكب متطلبات العصر.",
-    "image": "/egypt-map.png"
-  },
-  {
-    "title": "ضرب الأطفال",
-    "description": "العنف ضد الأطفال ممارسة شائعة في البيوت والمدارس، مما يؤثر سلبًا على صحتهم النفسية وقدراتهم على بناء شخصيات سوية.",
-    "image": "/egypt-map.png"
-  },
-];
+type Article = {
+  title: string;
+  description: string;
+  image: string;
+};
 
-// الحصول على اسم المقال من المسار
-const { name } = Astro.params; // قيمة name هي الـ slug الذي في المسار
+// دالة getStaticPaths
+export function getStaticPaths() {
+  const articles = [
+    {
+      "title": "الفقر",
+      "description": "يعيش ملايين المصريين تحت خط الفقر، مما يجعلهم غير قادرين على تلبية احتياجاتهم الأساسية مثل الغذاء، السكن، والرعاية الصحية.",
+      "image": "/egypt-map.png"
+    },
+    {
+      "title": "التعليم",
+      "description": "يعاني النظام التعليمي في مصر من ضعف المناهج، قلة الموارد، وطرق التدريس التقليدية التي لا تواكب متطلبات العصر.",
+      "image": "/egypt-map.png"
+    },
+    {
+      "title": "ضرب الأطفال",
+      "description": "العنف ضد الأطفال ممارسة شائعة في البيوت والمدارس، مما يؤثر سلبًا على صحتهم النفسية وقدراتهم على بناء شخصيات سوية.",
+      "image": "/egypt-map.png"
+    },
+  ];
 
-if (!name) {
-  throw new Error('Slug is missing');
+  return articles.map((article) => ({
+    params: { name: article.title.replace(/\s+/g, '-').toLowerCase() }, // تحويل العنوان إلى slug
+  }));
 }
 
-// إيجاد المقال بناءً على العنوان (بعد تحويله إلى slug)
-const article = articles.find(a => a.title.replace(/\s+/g, '-').toLowerCase() === name.toLowerCase());
+// تحديد نوع المقالات المتوقعة في Astro.props
+const { article }: { article: Article } = Astro.props;
 
 if (!article) {
-  throw new Error('Article not found');
+  throw new Error('Slug is missing');
 }
 ---
 
