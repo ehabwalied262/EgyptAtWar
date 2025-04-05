@@ -1,4 +1,6 @@
 ---
+import NavBar from '@/components/NavBar.astro';
+
 export function getStaticPaths() {
 const problems =[
       {
@@ -127,16 +129,39 @@ const problems =[
 }
 
 const { problem } = Astro.props;
+
+
+const articles = [
+  {
+    imageSrc: "/egypt-map.png",
+    altText: "Desert ground rocks",
+    title: "Desert ground rocks",
+    author: "Enrico Tannehill"
+  },
+  {
+    imageSrc: "/egypt-map.png",
+    altText: "Rugged stone texture",
+    title: "Rugged stone texture",
+    author: "Alexandra Stonecraft"
+  },
+  {
+    imageSrc: "/egypt-map.png",
+    altText: "Mountain rock face",
+    title: "Mountain rock face",
+    author: "John Mountain"
+  }
+];
 ---
+
 <html lang="ar">
   <head>
     <meta charset="utf-8" />
   </head>
-<body class="bg-gray-900 text-white min-h-screen">
+<body class="bg-gray-900 text-white min-h-screen mt-10">
+    <NavBar />
     <div id="page-content" class="page-transition">
-      <section class="py-12">
+      <section class="py-12 text-right">
         <div class="max-w-5xl mx-auto px-4">
-          <h1 class="text-4xl font-bold text-center mb-12">{problem.title}</h1>
           <div class="flex flex-col md:flex-row gap-8">
             <!-- Image -->
             <div class="md:w-1/3 flex-shrink-0">
@@ -158,7 +183,36 @@ const { problem } = Astro.props;
           </div>
         </div>
       </section>
+
+      <section class="py-4">
+        <div class="container mx-auto px-4">
+          <h2 class="text-xl font-bold text-white mb-4 text-right">مقالات</h2>
+          <p class="text-white text-opacity-75 mb-8 text-right">استكشف مقالات تناقش هذه المشكلة :</p>
+      
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {articles.map(item => {
+              const articleSlug = item.title.replace(/\s+/g, '-'); // تحويل العنوان إلى slug
+              return (
+                <a
+                  href={`/articles/${articleSlug}`}
+                  class="bg-gray-800 rounded-lg overflow-hidden shadow-md transform transition duration-300 hover:scale-95 hover:opacity-90 cursor-pointer block"
+                >
+                  <img
+                    src={item.imageSrc}
+                    alt={item.altText}
+                    class="w-full h-48 object-cover"
+                  />
+                  <div class="p-4">
+                    <h3 class="text-lg font-bold text-white mb-2">{item.title}</h3>
+                    <p class="text-white text-opacity-75 text-sm">{item.author}</p>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </section>      
     </div>
   </body>
-  </html>
+  </dir=>
   

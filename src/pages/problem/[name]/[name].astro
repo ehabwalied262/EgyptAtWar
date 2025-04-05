@@ -1,0 +1,54 @@
+---
+const articles = [
+  {
+    "title": "الفقر",
+    "description": "يعيش ملايين المصريين تحت خط الفقر، مما يجعلهم غير قادرين على تلبية احتياجاتهم الأساسية مثل الغذاء، السكن، والرعاية الصحية.",
+    "image": "/egypt-map.png"
+  },
+  {
+    "title": "التعليم",
+    "description": "يعاني النظام التعليمي في مصر من ضعف المناهج، قلة الموارد، وطرق التدريس التقليدية التي لا تواكب متطلبات العصر.",
+    "image": "/egypt-map.png"
+  },
+  {
+    "title": "ضرب الأطفال",
+    "description": "العنف ضد الأطفال ممارسة شائعة في البيوت والمدارس، مما يؤثر سلبًا على صحتهم النفسية وقدراتهم على بناء شخصيات سوية.",
+    "image": "/egypt-map.png"
+  },
+];
+
+// الحصول على اسم المقال من المسار
+const { name } = Astro.params; // قيمة name هي الـ slug الذي في المسار
+
+if (!name) {
+  throw new Error('Slug is missing');
+}
+
+// إيجاد المقال بناءً على العنوان (بعد تحويله إلى slug)
+const article = articles.find(a => a.title.replace(/\s+/g, '-').toLowerCase() === name.toLowerCase());
+
+if (!article) {
+  throw new Error('Article not found');
+}
+---
+
+<section class="py-12">
+  <div class="max-w-5xl mx-auto px-4">
+    <!-- عنوان المقال -->
+    <h1 class="text-4xl font-bold text-center mb-12">{article.title}</h1>
+    <div class="flex flex-col md:flex-row gap-8">
+      <!-- الصورة -->
+      <div class="md:w-1/3 flex-shrink-0">
+        <img
+          src={article.image}
+          alt={article.title}
+          class="w-full h-96 object-cover rounded-lg shadow-md"
+        />
+      </div>
+      <div class="md:w-2/3">
+        <!-- وصف المقال -->
+        <p class="text-lg text-white mb-8">{article.description}</p>
+      </div>
+    </div>
+  </div>
+</section>

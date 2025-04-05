@@ -9,7 +9,7 @@ const links = [
 ];
 ---
 
-<nav class="text-white py-4 px-6 bg-darkBackground">
+<nav class="navbar text-white py-4 px-6 bg-transparent mb-8">
   <div class="container mx-auto flex justify-between items-center">
     <a href="/" class="text-2xl font-bold">Egypt At War</a>
     
@@ -57,6 +57,18 @@ const links = [
   ></div>
 </nav>
 
+<style>
+  
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-bottom: 20px !important; /* يمكنك تعديل القيمة حسب ما تفضل */
+  z-index: 2; /* تأكد من أن الـ navbar يبقى فوق hero-section */
+}
+
+</style>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.getElementById("menu-toggle");
