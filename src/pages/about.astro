@@ -1,82 +1,34 @@
 ---
 import NavBar from "@/components/NavBar.astro";
+import { getEntry } from 'astro:content';
+
+// جلب المحتوى من src/content/about/about.md
+const entry = await getEntry('about', 'about');
+const sections = entry ? entry.data.sections : [];
 ---
 
 <html lang="ar">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Figures Page</title>
-        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-        </head>
-    <body class="bg-darkBackground text-white min-h-screen mt-16">
-        <!-- NavBar -->
-        <NavBar />
-      
-        <div class="px-6 py-12 max-w-3xl mx-auto text-right">
-            <!-- الجزء الأول: من نحن -->
-            <section id="who-we-are" class="mb-12">
-              <h2 class="text-4xl font-semibold mb-6">من نحن؟</h2>
-              <p class="text-lg leading-relaxed tracking-wide space-y-6">
-                نحن فريق مدني مصري لا نسعى لتطبيق شرع الله بالقوة، ولا نطمح إلى السلطة أبدًا. لسنا ملحدين أيضًا، بل مصريون عاديون جدًا، بدأنا من الصفر، أو ربما من تحت الصفر. نكتب هذا للتوضيح منذ البداية، لنفي الاتهامات الجاهزة التي ستُلصق بنا دون تفكير.
-              </p>
-            </section>
-        
-            <!-- الجزء الثاني: لماذا وُجدنا؟ -->
-            <section id="why-we-exist" class="mb-12">
-              <h2 class="text-3xl font-semibold mb-6">لماذا وُجدنا؟</h2>
-              <p class="text-lg leading-relaxed tracking-wide space-y-6">
-                جاء وجودنا من شعور السأم من الركود التام الذي نعيشه منذ سنوات طويلة، ركود فكري ومجتمعي استمر لعقود. فتحنا أعيننا على واقع مؤلم: إسرائيل ترتكب جرائم بحقنا وبحق إخوتنا في فلسطين، غزة، سوريا، ولبنان.
-              </p>
-            </section>
-        
-            <!-- الجزء الثالث: ماذا نريد؟ -->
-            <section id="what-we-want" class="mb-12">
-              <h2 class="text-3xl font-semibold mb-6">ماذا نريد؟</h2>
-              <p class="text-lg leading-relaxed tracking-wide space-y-6">
-                عندما أرادت إسرائيل أن تضمن ألا تقوم لأمتنا قائمة، اغتالت علماءنا ومفكرينا: مصطفى مشرفة، سميرة موسى، يحيى المشد، جمال حمدان. أقل ما يمكننا فعله هو أن نثبت لهم أن دماء هؤلاء لم تذهب هدرًا.
-              </p>
-            </section>
-        
-            <!-- الجزء الرابع: كيف نغير؟ -->
-            <section id="how-we-change" class="mb-12">
-              <h2 class="text-3xl font-semibold mb-6">كيف نغير؟</h2>
-              <p class="text-lg leading-relaxed tracking-wide space-y-6">
-                أدرك أن أغلبنا محدود الموارد، وليس لدينا الغنى الكافي لتمويل مشاريع ضخمة. لكن من خلال عملي في المجال الخيري، لاحظت أن الناس تصرف زكاتها وصدقاتها على أشياء جيدة، لكنها ليست جوهرية بما يكفي لتُحدث تغييرًا ملموسًا في المجتمع. 
-              </p>
-            </section>
-        
-            <!-- الجزء الخامس: المقاطعة والبديل -->
-            <section id="boycott-and-alternatives" class="mb-12">
-              <h2 class="text-3xl font-semibold mb-6">المقاطعة والبديل</h2>
-              <p class="text-lg leading-relaxed tracking-wide space-y-6">
-                أما عن المقاطعة، فمن العبث أن تظل محصورة في ماكدونالدز وشيبسي وبيبسي فقط. خطتنا يجب أن تكون أكبر: تصنيع منتج بديل بنفس الجودة. المقاطعة وحدها لن تدوم، لأن الناس لن تستطيع الاستمرار فيها.
-              </p>
-            </section>
-        
-            <!-- الجزء السادس: الأولويات -->
-            <section id="our-priorities" class="mb-12">
-              <h2 class="text-3xl font-semibold mb-6">أولوياتنا</h2>
-              <p class="text-lg leading-relaxed tracking-wide space-y-6">
-                لفت انتباهي مشهد توقف الطواف حول الكعبة في عمرة رمضان. ثلاثة ملايين مسلم، جزء كبير منهم مصريون، ذهبوا لأداء سنة وليس فرضًا. لم نفكر يومًا في توجيه هذا المال لتمويل تعليم 100 شاب أو شابة في علوم نافعة تفيد أمتنا.
-              </p>
-            </section>
-        
-            <!-- الجزء السابع: لماذا نحن ضعفاء؟ -->
-            <section id="why-we-are-weak" class="mb-12">
-              <h2 class="text-3xl font-semibold mb-6">لماذا نحن ضعفاء؟</h2>
-              <p class="text-lg leading-relaxed tracking-wide space-y-6">
-                لأننا نعتمد على الغرب في كل شيء. وللأسف، لو ظللنا نطالب حكوماتنا بالتغيير، لن تستمع، وقد نُحبس أو نختفي قسريًا في وطن عربي يحكمه القمع واضطهاد أي صوت ينادي بالتغيير.
-              </p>
-            </section>
-        
-            <!-- الجزء الثامن: فكرتنا -->
-            <section id="our-idea" class="mb-12">
-              <h2 class="text-3xl font-semibold mb-6">فكرتنا</h2>
-              <p class="text-lg leading-relaxed tracking-wide space-y-6">
-                لذلك، جاءت فكرتنا: أن نبدأ التغيير بأنفسنا، بدون أجندة سياسية. لا نريد تغيير نظام، ولا ثورة، ولا فرض شرع الله بالقوة، ولا نسعى للسلطة. نريد فقط أن يدرك الناس أن علينا العمل، وألا ننتظر الحكومة لتغير شيئًا.
-              </p>
-            </section>
-          </div>
-    <body />
-<html />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <title>About us</title>
+  </head>
+  <body class="bg-darkBackground text-white min-h-screen mt-16">
+    <!-- NavBar -->
+    <NavBar />
+
+    <div class="px-6 py-12 max-w-4xl mx-auto text-right">
+      {sections.length > 0 ? (
+        sections.map((section) => (
+          <section class="mb-10">
+            <h2 class="text-3xl font-bold mb-4 text-yellow-400">{section.title}</h2>
+            <p class="text-lg leading-relaxed">{section.content}</p>
+          </section>
+        ))
+      ) : (
+        <h1>Not Found</h1>
+      )}
+    </div>
+  </body>
+</html>

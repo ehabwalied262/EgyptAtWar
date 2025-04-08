@@ -1,0 +1,28 @@
+---
+import countries from "../../data/countries.js";
+
+export async function getStaticPaths() {
+  return countries.map((country) => ({
+    params: { slug: country.href.split("/").pop() },
+  }));
+}
+
+const { slug } = Astro.params;
+const country = countries.find((c) => c.href === `/comparisons/${slug}`);
+
+if (!country) {
+  throw new Error("Country not found");
+}
+---
+
+<html>
+    <meta charset="utf-8" />
+  <head>
+    <title>{country.name}</title>
+  </head>
+  <body class="text-white bg-gray-900 p-8">
+    <h1 class="text-3xl font-bold mb-4">{country.name}</h1>
+    <img src={country.flag} alt={`${country.name} Flag`} class="w-32 h-auto mb-6" />
+    <p>هنا هيكون المحتوى الخاص بـ {country.name}.</p>
+  </body>
+</html>

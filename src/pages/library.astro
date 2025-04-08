@@ -3,28 +3,22 @@ import LibraryFilterBar from '../components/LibraryFilterBar.astro';
 import NavBar from '../components/NavBar.astro';
 import LibraryHeroSection from '../components/LibraryHeroSection.astro';
 import LibraryFeaturedGrid from '../components/LibraryFeaturedGrid.astro';
-import Sidebar from '@/components/Sidebar.astro';
 ---
 
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Figures Page</title>
+    <title>Library</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   </head>
   <body class="bg-darkBackground text-white min-h-screen mt-16">
     <!-- NavBar -->
     <NavBar />
 
-    <div class="flex min-h-screen">
-      <!-- Sidebar: Fixed width (e.g., 1/4 of screen) -->
-      <div class="w-1/4 flex-shrink-0">
-        <Sidebar />
-      </div>
-      
-      <!-- Main Content Area: Takes remaining width -->
-      <div class="flex-1 flex flex-col">
+    <div class="flex min-h-screen flex-col">
+      <!-- Main Content Area: Takes full width -->
+      <div class="flex-1 flex flex-col w-full max-w-full overflow-x-hidden">
         <!-- Hero Section: Full width of main content -->
         <div class="w-full">
           <LibraryHeroSection />
@@ -43,3 +37,33 @@ import Sidebar from '@/components/Sidebar.astro';
     </div>
   </body>
 </html>
+
+<style>
+  /* منع التمرير الأفقي على مستوى الصفحة */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* تحسين الـ Responsiveness للشاشات الصغيرة */
+  @media (max-width: 767px) {
+    body {
+      margin-top: 3rem; /* 48px، تقليل المسافة العلوية للـ NavBar */
+    }
+
+    .flex-col {
+      width: 100%;
+      max-width: 100%;
+      padding: 0 0.5rem; /* 8px padding جانبي */
+    }
+
+    /* ضبط العناصر لتأخذ العرض الكامل */
+    .w-full {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+  }
+</style>

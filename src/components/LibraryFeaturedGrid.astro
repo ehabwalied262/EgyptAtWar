@@ -42,3 +42,62 @@ const featuredItems = [
     </div>
   </div>
 </section>
+
+<style>
+  .container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 767px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .grid > div {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .h-48 {
+      height: 10rem; /* 160px */
+    }
+
+    h2 {
+      font-size: 1rem; /* 16px */
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 0.75rem; /* 12px */
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 0.875rem; /* 14px */
+    }
+
+    .text-sm {
+      font-size: 0.625rem; /* 10px */
+    }
+
+    .p-4 {
+      padding: 0.5rem;
+    }
+
+    .px-4 {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    .py-4 {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .gap-4 {
+      gap: 0.5rem;
+    }
+  }
+</style>

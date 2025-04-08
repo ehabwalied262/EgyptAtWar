@@ -1,0 +1,167 @@
+---
+import { z, getCollection } from 'astro:content';
+import NavBar from '@/components/NavBar.astro';
+
+// تعريف schema للمشاكل
+const problemSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  image: z.string(),
+  folder: z.string(),
+});
+
+// تعريف schema للمقالات
+const articleSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  image: z.string(),
+  pubDate: z.string().optional(),
+});
+
+export async function getStaticPaths() {
+  const problems = await getCollection('problems');
+  return problems.map((problem: any) => ({
+    params: { problem: problem.slug },
+    props: { problem: problem.data as z.infer<typeof problemSchema>, problemSlug: problem.slug },
+  }));
+}
+
+const { problem, problemSlug } = Astro.props;
+
+// جلب المقالات الخاصة بالمشكلة بناءً على المجلد
+const articles = await getCollection('articles', (entry) => {
+  return entry.id.startsWith(`${problem.folder}/`);
+});
+---
+
+<html lang="ar">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- ضروري للـ Responsiveness -->
+  </head>
+  <body class="bg-gray-900 text-white min-h-screen mt-10">
+    <NavBar />
+    <div id="page-content" class="page-transition">
+      <section class="py-12 text-right">
+        <div class="max-w-5xl mx-auto px-4">
+          <div class="flex flex-col md:flex-row gap-8">
+            <!-- Image -->
+            <div class="md:w-1/3 flex-shrink-0">
+              <img
+                src={problem.image}
+                alt={problem.title}
+                class="w-full h-64 md:h-96 object-cover rounded-lg shadow-md"
+              />
+            </div>
+            <!-- Article -->
+            <div class="md:w-2/3">
+              <div class="bg-gray-800 rounded-lg p-6 shadow-md">
+                <h2 class="text-2xl font-semibold mb-4">{problem.title}</h2>
+                <p class="text-base md:text-lg leading-relaxed">
+                  {problem.description}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-4">
+        <div class="container mx-auto px-4">
+          <h2 class="text-xl font-bold text-white mb-4 text-right">مقالات</h2>
+          <p class="text-white text-opacity-75 mb-8 text-right">استكشف مقالات تناقش هذه المشكلة :</p>
+      
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {articles.map(item => {
+              const articleSlug = item.slug.split('/')[1];
+              return (
+              <a
+                href={`/problem/${problemSlug}/${articleSlug}`}
+                class="bg-gray-800 rounded-lg overflow-hidden shadow-md transform transition duration-300 hover:scale-95 hover:opacity-90 cursor-pointer block"
+              >
+                <img
+                  src={item.data.image}
+                  alt={item.data.title}
+                  class="w-full h-48 object-cover"
+                />
+                <div class="p-4">
+                  <h3 class="text-lg font-bold text-white mb-2">{item.data.title}</h3>
+                </div>
+              </a>
+              );
+            })}
+          </div>
+        </div>
+      </section>      
+    </div>
+  </body>
+</html>
+
+<style>
+  /* تحسين الـ Responsiveness للشاشات الصغيرة */
+  @media (max-width: 767px) {
+    /* جعل الصورة والوصف عموديين */
+    .flex-col {
+      flex-direction: column;
+    }
+
+    /* ضبط ارتفاع الصورة على الموبايل */
+    img {
+      height: 64; /* 16rem = 256px، مناسب للموبايل */
+      max-width: 100%;
+    }
+
+    /* تقليل حجم النصوص لتكون مريحة */
+    h2 {
+      font-size: 1.5rem; /* 24px */
+    }
+
+    p {
+      font-size: 0.875rem; /* 14px */
+      line-height: 1.5;
+    }
+
+    /* ضبط الـ padding داخل الكاردات */
+    .p-6 {
+      padding: 1rem; /* 16px */
+    }
+
+    .p-4 {
+      padding: 0.75rem; /* 12px */
+    }
+
+    /* جعل الـ Grid عمود واحد فقط */
+    .grid {
+      grid-template-columns: 1fr; /* عمود واحد */
+    }
+
+    /* ضبط حجم صور المقالات */
+    .h-48 {
+      height: 12rem; /* 192px، مناسب للموبايل */
+    }
+
+    /* تحسين التباعد العام */
+    .gap-8 {
+      gap: 1.5rem; /* 24px */
+    }
+
+    .gap-4 {
+      gap: 1rem; /* 16px */
+    }
+  }
+
+  /* تحسينات إضافية للشاشات المتوسطة (تابلت) */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    h2 {
+      font-size: 1.75rem; /* 28px */
+    }
+
+    p {
+      font-size: 1rem; /* 16px */
+    }
+
+    .grid {
+      grid-template-columns: repeat(2, 1fr); /* عمودين للتابلت */
+    }
+  }
+</style>

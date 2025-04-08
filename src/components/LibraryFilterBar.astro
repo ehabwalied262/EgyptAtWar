@@ -6,14 +6,13 @@ const filterItems = [
   "Nutrition & Health",
   "Politics",
   "Educational",
-
 ];
 ---
 
-<div class="bg-background text-white p-4 flex space-x-4" id="filterBar">
+<div class="bg-background text-white p-4 flex space-x-4 overflow-x-auto whitespace-nowrap" id="filterBar">
   {filterItems.map((item, index) => (
     <div 
-      class="border border-white/50 px-3 py-1 rounded-md cursor-pointer hover:bg-blank hover:text-darkBackground" 
+      class="border border-white/50 px-3 py-1 rounded-md cursor-pointer hover:bg-blank hover:text-darkBackground flex-shrink-0 transition-all duration-300 ease-in-out" 
       data-index={index}
     >
       {item}
@@ -43,3 +42,47 @@ const filterItems = [
     });
   });
 </script>
+
+<style>
+  /* تحسين الـ Responsiveness للشاشات الصغيرة */
+  #filterBar {
+    -webkit-overflow-scrolling: touch; /* تحسين التمرير على iOS */
+    scrollbar-width: thin; /* لجعل الـ Scrollbar أنحف على Firefox */
+  }
+
+  /* إخفاء الـ Scrollbar الافتراضي على Webkit (Chrome/Safari) */
+  #filterBar::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  #filterBar::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+
+  @media (max-width: 767px) {
+    #filterBar {
+      padding: 0.75rem; /* 12px، تقليل الـ padding */
+    }
+
+    #filterBar > div {
+      font-size: 0.875rem; /* 14px، حجم نص أصغر */
+      padding: 0.5rem 1rem; /* تقليل الـ padding الداخلي */
+    }
+  }
+
+  /* تحسينات للشاشات المتوسطة (تابلت) */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    #filterBar > div {
+      font-size: 1rem; /* 16px */
+      padding: 0.75rem 1.25rem; /* تباعد وسيط */
+    }
+  }
+
+  /* إضافة Transition لكل العناصر */
+  #filterBar > div {
+    transition-property: background-color, color; /* الخصائص التي ستتغير */
+    transition-duration: 300ms; /* مدة التأثير: 0.3 ثانية */
+    transition-timing-function: ease-in-out; /* منحنى التسارع للسلاسة */
+  }
+</style>

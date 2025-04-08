@@ -1,24 +1,65 @@
 ---
-// FiguresHeroSection.astro
+// LibraryHeroSection.astro
 ---
 <div class="relative overflow-hidden flex justify-center py-8">
-    <!-- Image Container with Thin Border & Subtle Glow -->
-    <div class="relative w-full mx-4 border-[1px] border-white/60 rounded-lg shadow-[0px_0px_4px_rgba(255,255,255)] overflow-hidden">
-      <img
-        src="/The-School-of-Athens.png"
-        alt="Background Image"
-        class="w-full h-[30vh] object-cover rounded-lg"
-      />
-      <!-- Dark Overlay -->
-      <div class="absolute inset-0 bg-black opacity-50 rounded-lg"></div>
-    </div>
-  
-    <!-- Text Overlay -->
-    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-      <h1 class="text-4xl font-bold text-white relative z-10">Quarry Layers Collection</h1>
-      <p class="text-white text-opacity-80 text-lg max-w-2xl relative z-10 mt-4">
-        Transform your digital canvas with our featured 3D textures. From the raw beauty of nature to cutting-edge futuristic designs, each texture is a masterpiece waiting to improve your creations.
-      </p>
-    </div>
+  <!-- Image Container with Thin Border & Subtle Glow -->
+  <div class="relative w-full mx-4 border-[1px] border-white/60 rounded-lg shadow-[0px_0px_4px_rgba(255,255,255)] overflow-hidden">
+    <img
+      src="/The-School-of-Athens.png"
+      alt="Background Image"
+      class="w-full h-[30vh] object-cover rounded-lg"
+    />
+    <!-- Dark Overlay -->
+    <div class="absolute inset-0 bg-black opacity-50 rounded-lg"></div>
   </div>
-  
+
+  <!-- Text Overlay -->
+  <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+    <h1 class="text-4xl font-bold text-white relative z-10">Quarry Layers Collection</h1>
+    <p class="text-white text-opacity-80 text-lg max-w-2xl relative z-10 mt-4">
+      Transform your digital canvas with our featured 3D textures. From the raw beauty of nature to cutting-edge futuristic designs, each texture is a masterpiece waiting to improve your creations.
+    </p>
+  </div>
+</div>
+
+<style>
+/* منع التجاوز */
+.w-full {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+  .h-\[30vh\] {
+    height: 20vh; /* تقليل الارتفاع */
+  }
+
+  h1 {
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1.5;
+    max-width: 90%;
+    margin-top: 0.5rem;
+  }
+
+  .py-8 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .px-6 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .mx-4 {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+  }
+}
+</style>

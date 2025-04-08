@@ -1,12 +1,27 @@
 ---
+
+const currentPath = new URL(Astro.request.url).pathname;
+
 const links = [
   { name: "Home", href: "/" },
-  { name: "Presidents", href: "/presidents" },
+  { name: "Education", href: "/education" },
   { name: "Library", href: "/library" },
-  { name: "Global Comparisons", href: "/comparisons" },
+  { name: "Global Comparisons", href: "/comparisons", hasDropdown: true },
   { name: "Articles", href: "/articles" },
   { name: "About Us", href: "/about" },
 ];
+
+const dropdownItems = [
+  { name: "Singapore", href: "/comparisons/singapore", flag: "/singapore.png" },
+  { name: "South Korea", href: "/comparisons/south-korea", flag: "/south-korea.png" },
+  { name: "China", href: "/comparisons/china", flag: "/china.png" },
+  { name: "Brazil", href: "/comparisons/brazil", flag: "/brazil.png" },
+  { name: "India", href: "/comparisons/india", flag: "/india.png" },
+  { name: "Germany", href: "/comparisons/germany", flag: "/germany.png" },
+  { name: "Japan", href: "/comparisons/japan", flag: "/japan.png" },
+  { name: "Turkey", href: "/comparisons/turkey", flag: "/turkey.png" }
+];
+
 ---
 
 <nav class="navbar text-white py-4 px-6 bg-transparent mb-8">
@@ -23,12 +38,41 @@ const links = [
     </button>
 
     {/* Navigation Links for Desktop */}
-    <ul class="hidden md:flex md:space-x-6 md:items-center">
+    <ul class="hidden md:flex md:space-x-6 md:items-center relative">
       {links.map((link) => (
-        <li>
-          <a href={link.href} class="hover:text-gray-300">
+        <li class="relative group">
+          <a 
+            href={link.href} 
+            class={`hover:text-gray-300 flex flex-col items-center ${
+              currentPath === link.href ? "text-white" : "text-gray-400"
+            }`}
+          >
             {link.name}
+            {/* White dot for active item */}
+            <span 
+              class={`w-1.5 h-1.5 rounded-full mt-1 transition-colors ${
+                currentPath === link.href ? "bg-white" : "bg-transparent"
+              }`}
+            ></span>
           </a>
+          {/* Dropdown for Global Comparisons */}
+          {link.hasDropdown && (
+            <ul class="absolute left-0 top-full mt-0 w-48 bg-gray-800 text-white shadow-lg rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+              {dropdownItems.map((item, idx) => (
+                <li>
+                  <a
+                    href={item.href}
+                    class={`flex items-center justify-between gap-2 px-4 py-2 hover:bg-gray-700 transition-colors duration-150 
+                      ${idx === 0 ? "rounded-t-lg" : ""} 
+                      ${idx === dropdownItems.length - 1 ? "rounded-b-lg" : ""}`}
+                  >
+                    <span>{item.name}</span>
+                    <img src={item.flag} alt={`${item.name} flag`} class="w-5 h-4 object-cover ml-2" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </li>
       ))}
     </ul>
@@ -36,13 +80,18 @@ const links = [
 
   {/* Sidebar for Mobile */}
   <div 
-    class="fixed inset-y-0 right-0 w-64 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden z-50" 
+    class="fixed inset-y-0 right-0 w-64 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden z-50 bg-gray-900" 
     id="mobile-sidebar"
   >
     <ul class="flex flex-col h-full space-y-6 p-6 text-white">
       {links.map((link) => (
         <li>
-          <a href={link.href} class="hover:text-gray-300 text-lg">
+          <a 
+            href={link.href} 
+            class={`hover:text-gray-300 text-lg ${
+              currentPath === link.href ? "text-white" : "text-gray-400"
+            }`}
+          >
             {link.name}
           </a>
         </li>
@@ -50,7 +99,7 @@ const links = [
     </ul>
   </div>
 
-  {/* Overlay for closing sidebar when clicking outside */}
+  {/* Overlay for closing sidebar */}
   <div 
     class="fixed inset-0 bg-black/50 hidden z-40" 
     id="overlay"
@@ -58,44 +107,39 @@ const links = [
 </nav>
 
 <style>
-  
-.navbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin-bottom: 20px !important; /* يمكنك تعديل القيمة حسب ما تفضل */
-  z-index: 2; /* تأكد من أن الـ navbar يبقى فوق hero-section */
-}
-
+  .navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 20px !important; 
+    z-index: 2; 
+  }
 </style>
+
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.getElementById("menu-toggle");
     const mobileSidebar = document.getElementById("mobile-sidebar");
     const overlay = document.getElementById("overlay");
 
-    // Ensure all required elements exist before proceeding
     if (!menuToggle || !mobileSidebar || !overlay) {
       console.error("Required DOM elements are missing.");
       return;
     }
 
-    // Menu toggle functionality
     menuToggle.addEventListener("click", () => {
       mobileSidebar.classList.toggle("translate-x-full");
       overlay.classList.toggle("hidden");
       menuToggle.textContent = mobileSidebar.classList.contains("translate-x-full") ? "☰" : "✕";
     });
 
-    // Close sidebar when clicking overlay
     overlay.addEventListener("click", () => {
       mobileSidebar.classList.add("translate-x-full");
       overlay.classList.add("hidden");
       menuToggle.textContent = "☰";
     });
 
-    // Close sidebar when clicking a link
     mobileSidebar.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", () => {
         mobileSidebar.classList.add("translate-x-full");
