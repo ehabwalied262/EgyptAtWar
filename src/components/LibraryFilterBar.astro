@@ -4,8 +4,7 @@ const filterItems = [
   "History",
   "Psychology",
   "Nutrition & Health",
-  "Politics",
-  "Educational",
+  "Geo-Politics",
 ];
 ---
 
@@ -14,6 +13,12 @@ const filterItems = [
     <div 
       class="border border-white/50 px-3 py-1 rounded-md cursor-pointer hover:bg-blank hover:text-darkBackground flex-shrink-0 transition-all duration-300 ease-in-out" 
       data-index={index}
+      onClick={() => {
+        const event = new CustomEvent('filterChange', {
+          detail: { category: item.toLowerCase().replace(/ & /g, '-') }
+        });
+        window.dispatchEvent(event);
+      }}
     >
       {item}
     </div>

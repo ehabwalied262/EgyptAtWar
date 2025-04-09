@@ -1,0 +1,59 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+
+// دالة getStaticPaths لتوليد المسارات الديناميكية
+export async function getStaticPaths() {
+  // جلب جميع المقالات من الـ Collection
+  const allArticles = await getCollection('library-topics');
+
+  // إنشاء مسارات ديناميكية لكل مقال
+  return allArticles.map(article => {
+    // استخراج topic و article من المسار (مثل zionism/zionism-and-global-politics.md)
+    const [topic, articleWithExtension] = article.id.split('/');
+    const articleName = articleWithExtension.replace('.md', ''); // إزالة الامتداد .md
+
+    return {
+      params: {
+        topic: topic, // مثل zionism, history, إلخ
+        article: articleName, // مثل zionism-and-global-politics
+      },
+      props: {
+        article, // تمرير المقال كـ Prop لتجنب جلب البيانات مرة أخرى
+      },
+    };
+  });
+}
+
+// استخراج المقال من الـ Props
+const { article } = Astro.props;
+
+// التحقق من وجود المقال (اختياري، لأن getStaticPaths يضمن وجود المقال)
+if (!article) {
+  return Astro.redirect('/404');
+}
+
+// جلب محتوى المقال للعرض
+const { Content } = await article.render();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{article.data.title}</title>
+  </head>
+  <body>
+    <div class="max-w-5xl mx-auto p-4">
+        <h1 class="text-3xl font-semibold text-gray-900 mt-4 sm:text-2xl md:text-3xl lg:text-4xl">
+          {article.data.title}
+        </h1>
+        <p class="text-lg text-gray-600 my-4 sm:text-base md:text-lg lg:text-xl">
+          {article.data.description}
+        </p>
+        <img class="w-full h-auto rounded-lg shadow-md my-6" src={article.data.image} alt={article.data.title} />
+        <div class="prose prose-gray max-w-none">
+          <Content />
+        </div>
+      </div>      
+  </body>
+</html>

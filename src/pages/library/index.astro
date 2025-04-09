@@ -1,8 +1,11 @@
 ---
-import LibraryFilterBar from '../components/LibraryFilterBar.astro';
-import NavBar from '../components/NavBar.astro';
-import LibraryHeroSection from '../components/LibraryHeroSection.astro';
-import LibraryFeaturedGrid from '../components/LibraryFeaturedGrid.astro';
+import NavBar from "@/components/NavBar.astro";
+import LibraryHeroSection from "@/components/LibraryHeroSection.astro";
+import LibraryFilterBar from "@/components/LibraryFilterBar.astro";
+import LibraryFeaturedGrid from "@/components/LibraryFeaturedGrid.astro";
+
+// القيمة الافتراضية للفئة المختارة
+let activeCategory = 'zionism';
 ---
 
 <html lang="en">
@@ -12,29 +15,43 @@ import LibraryFeaturedGrid from '../components/LibraryFeaturedGrid.astro';
     <title>Library</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   </head>
+
   <body class="bg-darkBackground text-white min-h-screen mt-16">
     <!-- NavBar -->
     <NavBar />
 
+    <!-- Page Container -->
     <div class="flex min-h-screen flex-col">
-      <!-- Main Content Area: Takes full width -->
       <div class="flex-1 flex flex-col w-full max-w-full overflow-x-hidden">
-        <!-- Hero Section: Full width of main content -->
+        <!-- Hero Section -->
         <div class="w-full">
           <LibraryHeroSection />
         </div>
-        
-        <!-- Filter Bar: Below Hero, full width -->
+
+        <!-- Filter Bar -->
         <div class="w-full">
-          <LibraryFilterBar />
+          <LibraryFilterBar onFilterChange={(category) => activeCategory = category} />
         </div>
-        
-        <!-- Featured Grid: Below Filter Bar, full width -->
+
+        <!-- Featured Grid -->
         <div class="w-full flex-1">
-          <LibraryFeaturedGrid />
+          <LibraryFeaturedGrid category={activeCategory} client:load />
         </div>
       </div>
     </div>
+
+    <!-- Script لإدارة الحالة -->
+    <script>
+      // استمع لتغييرات الفئة من LibraryFilterBar
+      window.addEventListener('filterChange', (event) => {
+        const category = event.detail.category;
+        // قم بتحديث الفئة المختارة في LibraryFeaturedGrid
+        const featuredGrid = document.querySelector('astro-library-featured-grid');
+        if (featuredGrid) {
+          featuredGrid.setAttribute('category', category);
+        }
+      });
+    </script>
   </body>
 </html>
 

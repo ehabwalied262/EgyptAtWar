@@ -3,7 +3,7 @@
 ---
 <div class="relative overflow-hidden flex justify-center py-8">
   <!-- Image Container with Thin Border & Subtle Glow -->
-  <div class="relative w-full mx-4 border-[1px] border-white/60 rounded-lg shadow-[0px_0px_4px_rgba(255,255,255)] overflow-hidden">
+  <div class="relative w-full mx-4 border-[1px] border-white/60 rounded-lg shadow-[0px_0px_4px_rgba(255,255,255)] overflow-hidden image-container">
     <img
       src="/The-School-of-Athens.png"
       alt="Background Image"
@@ -28,6 +28,14 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+}
+
+/* ضبط العرض للشاشات الكبيرة */
+@media (min-width: 1024px) {
+  .image-container {
+    width: 70%; /* جعل العنصر (الصورة مع البوردر) يأخذ 70% من العرض */
+    max-width: 70%;
+  }
 }
 
 @media (max-width: 767px) {
