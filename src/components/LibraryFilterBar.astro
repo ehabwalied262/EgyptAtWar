@@ -49,13 +49,11 @@ const filterItems = [
 </script>
 
 <style>
-  /* تحسين الـ Responsiveness للشاشات الصغيرة */
   #filterBar {
-    -webkit-overflow-scrolling: touch; /* تحسين التمرير على iOS */
-    scrollbar-width: thin; /* لجعل الـ Scrollbar أنحف على Firefox */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
   }
 
-  /* إخفاء الـ Scrollbar الافتراضي على Webkit (Chrome/Safari) */
   #filterBar::-webkit-scrollbar {
     height: 6px;
   }
@@ -67,27 +65,25 @@ const filterItems = [
 
   @media (max-width: 767px) {
     #filterBar {
-      padding: 0.75rem; /* 12px، تقليل الـ padding */
+      padding: 0.75rem;
     }
 
     #filterBar > div {
-      font-size: 0.875rem; /* 14px، حجم نص أصغر */
-      padding: 0.5rem 1rem; /* تقليل الـ padding الداخلي */
+      font-size: 0.875rem;
+      padding: 0.5rem 1rem;
     }
   }
 
-  /* تحسينات للشاشات المتوسطة (تابلت) */
   @media (min-width: 768px) and (max-width: 1023px) {
     #filterBar > div {
-      font-size: 1rem; /* 16px */
-      padding: 0.75rem 1.25rem; /* تباعد وسيط */
+      font-size: 1rem;
+      padding: 0.75rem 1.25rem;
     }
   }
 
-  /* إضافة Transition لكل العناصر */
   #filterBar > div {
-    transition-property: background-color, color; /* الخصائص التي ستتغير */
-    transition-duration: 300ms; /* مدة التأثير: 0.3 ثانية */
-    transition-timing-function: ease-in-out; /* منحنى التسارع للسلاسة */
+    transition-property: background-color, color;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
   }
 </style>

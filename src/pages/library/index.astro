@@ -1,8 +1,25 @@
 ---
 import NavBar from "@/components/NavBar.astro";
 import LibraryHeroSection from "@/components/LibraryHeroSection.astro";
-import LibraryFilterBar from "@/components/LibraryFilterBar.astro";
-import LibraryFeaturedGrid from "@/components/LibraryFeaturedGrid.astro";
+
+import { getCollection } from 'astro:content';
+import LibraryCombinedComponent from "@/components/LibraryCombinedComponent";
+
+// جلب جميع المقالات من الـ Collection
+const allArticlesRaw = await getCollection('library-topics');
+
+// تحويل المقالات إلى تنسيق يمكن لـ React استخدامه
+const allArticles = allArticlesRaw.map(article => {
+  const [topic, articleNameWithExtension] = article.id.split('/');
+  const articleName = articleNameWithExtension.replace('.md', '');
+  return {
+    imageSrc: article.data.image,
+    altText: article.data.title,
+    title: article.data.title,
+    author: "Unknown", // يمكن إضافة حقل author في الـ Frontmatter إذا أردتِ
+    slug: `/library/${topic}/${articleName}`, // إنشاء الـ Slug
+  };
+});
 
 // القيمة الافتراضية للفئة المختارة
 let activeCategory = 'zionism';
@@ -14,6 +31,10 @@ let activeCategory = 'zionism';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Library</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <!-- إضافة مكتبات React -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.5/babel.min.js"></script>
   </head>
 
   <body class="bg-darkBackground text-white min-h-screen mt-16">
@@ -28,24 +49,18 @@ let activeCategory = 'zionism';
           <LibraryHeroSection />
         </div>
 
-        <!-- Filter Bar -->
-        <div class="w-full">
-          <LibraryFilterBar onFilterChange={(category) => activeCategory = category} />
-        </div>
-
         <!-- Featured Grid -->
         <div class="w-full flex-1">
-          <LibraryFeaturedGrid category={activeCategory} client:load />
-        </div>
+            <LibraryCombinedComponent client:load allArticles={allArticles} />
+          </div>
       </div>
     </div>
 
     <!-- Script لإدارة الحالة -->
     <script>
-      // استمع لتغييرات الفئة من LibraryFilterBar
       window.addEventListener('filterChange', (event) => {
         const category = event.detail.category;
-        // قم بتحديث الفئة المختارة في LibraryFeaturedGrid
+        // تحديث الفئة في LibraryFeaturedGrid
         const featuredGrid = document.querySelector('astro-library-featured-grid');
         if (featuredGrid) {
           featuredGrid.setAttribute('category', category);

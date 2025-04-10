@@ -1,81 +1,153 @@
 ---
+import type { AstroGlobal } from 'astro';
 
-const currentPath = new URL(Astro.request.url).pathname;
+// Define types for links and dropdown items
+interface NavLink {
+  name: string;
+  href: string;
+  hasDropdown?: boolean;
+}
 
-const links = [
-  { name: "Home", href: "/" },
-  { name: "Education", href: "/education" },
-  { name: "Library", href: "/library" },
-  { name: "Global Comparisons", href: "/comparisons", hasDropdown: true },
-  { name: "Articles", href: "/articles" },
-  { name: "About Us", href: "/about" },
+interface DropdownItem {
+  name: string;
+  href: string;
+  flag: string;
+}
+
+// Get current path safely
+const currentPath: string = new URL(Astro.request.url).pathname;
+
+// Define translations
+const translations = {
+  en: {
+    Home: 'Home',
+    Education: 'Education',
+    Maps: 'Maps',
+    Library: 'Library',
+    GlobalComparisons: 'Global Comparisons',
+    Articles: 'Articles',
+    AboutUs: 'About Us',
+    Singapore: 'Singapore',
+    SouthKorea: 'South Korea',
+    China: 'China',
+    Brazil: 'Brazil',
+    India: 'India',
+    Germany: 'Germany',
+    Japan: 'Japan',
+    Turkey: 'Turkey',
+  },
+  ar: {
+    Home: 'الرئيسية',
+    Education: 'التعليم',
+    Maps: 'الخرائط',
+    Library: 'المكتبة',
+    GlobalComparisons: 'المقارنات العالمية',
+    Articles: 'المقالات',
+    AboutUs: 'معلومات عنا',
+    Singapore: 'سنغافورة',
+    SouthKorea: 'كوريا الجنوبية',
+    China: 'الصين',
+    Brazil: 'البرازيل',
+    India: 'الهند',
+    Germany: 'ألمانيا',
+    Japan: 'اليابان',
+    Turkey: 'تركيا',
+  },
+};
+
+// Navigation links with Maps added after Education
+const links: NavLink[] = [
+  { name: 'Home', href: '/' },
+  { name: 'Education', href: '/education' },
+  { name: 'Maps', href: '/maps' },
+  { name: 'Library', href: '/library' },
+  { name: 'GlobalComparisons', href: '/comparisons', hasDropdown: true },
+  { name: 'Articles', href: '/articles' },
+  { name: 'AboutUs', href: '/about' },
 ];
 
-const dropdownItems = [
-  { name: "Singapore", href: "/comparisons/singapore", flag: "/singapore.png" },
-  { name: "South Korea", href: "/comparisons/south-korea", flag: "/south-korea.png" },
-  { name: "China", href: "/comparisons/china", flag: "/china.png" },
-  { name: "Brazil", href: "/comparisons/brazil", flag: "/brazil.png" },
-  { name: "India", href: "/comparisons/india", flag: "/india.png" },
-  { name: "Germany", href: "/comparisons/germany", flag: "/germany.png" },
-  { name: "Japan", href: "/comparisons/japan", flag: "/japan.png" },
-  { name: "Turkey", href: "/comparisons/turkey", flag: "/turkey.png" }
+const dropdownItems: DropdownItem[] = [
+  { name: 'Singapore', href: '/comparisons/singapore', flag: '/singapore.png' },
+  { name: 'SouthKorea', href: '/comparisons/south-korea', flag: '/south-korea.png' },
+  { name: 'China', href: '/comparisons/china', flag: '/china.png' },
+  { name: 'Brazil', href: '/comparisons/brazil', flag: '/brazil.png' },
+  { name: 'India', href: '/comparisons/india', flag: '/india.png' },
+  { name: 'Germany', href: '/comparisons/germany', flag: '/germany.png' },
+  { name: 'Japan', href: '/comparisons/japan', flag: '/japan.png' },
+  { name: 'Turkey', href: '/comparisons/turkey', flag: '/turkey.png' },
 ];
 
+// Default to English for server-side rendering
+const defaultLang = 'en';
 ---
 
 <nav class="navbar text-white py-4 px-6 bg-transparent mb-8">
   <div class="container mx-auto flex justify-between items-center">
-    <a href="/" class="text-2xl font-bold">Egypt At War</a>
-    
-    {/* Burger Icon - Hidden on large screens */}
-    <button 
-      class="md:hidden text-3xl focus:outline-none" 
-      aria-label="Toggle Menu"
-      id="menu-toggle"
-    >
-      ☰
-    </button>
+    <a href="/" class="text-2xl font-bold" id="site-name">United Hands</a>
 
-    {/* Navigation Links for Desktop */}
-    <ul class="hidden md:flex md:space-x-6 md:items-center relative">
-      {links.map((link) => (
-        <li class="relative group">
-          <a 
-            href={link.href} 
-            class={`hover:text-gray-300 flex flex-col items-center ${
-              currentPath === link.href ? "text-white" : "text-gray-400"
-            }`}
-          >
-            {link.name}
-            {/* White dot for active item */}
-            <span 
-              class={`w-1.5 h-1.5 rounded-full mt-1 transition-colors ${
-                currentPath === link.href ? "bg-white" : "bg-transparent"
+    <div class="flex items-center space-x-4">
+      {/* Navigation Links for Desktop */}
+      <ul class="hidden md:flex md:space-x-6 md:items-center rtl:space-x-reverse">
+        {links.map((link) => (
+          <li class="relative group">
+            <a 
+              href={link.href} 
+              class={`hover:text-gray-300 flex flex-col items-center ${
+                currentPath === link.href ? "text-white" : "text-gray-400"
               }`}
-            ></span>
-          </a>
-          {/* Dropdown for Global Comparisons */}
-          {link.hasDropdown && (
-            <ul class="absolute left-0 top-full mt-0 w-48 bg-gray-800 text-white shadow-lg rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
-              {dropdownItems.map((item, idx) => (
-                <li>
-                  <a
-                    href={item.href}
-                    class={`flex items-center justify-between gap-2 px-4 py-2 hover:bg-gray-700 transition-colors duration-150 
-                      ${idx === 0 ? "rounded-t-lg" : ""} 
-                      ${idx === dropdownItems.length - 1 ? "rounded-b-lg" : ""}`}
-                  >
-                    <span>{item.name}</span>
-                    <img src={item.flag} alt={`${item.name} flag`} class="w-5 h-4 object-cover ml-2" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
-        </li>
-      ))}
-    </ul>
+              data-link-name={link.name}
+            >
+              {translations[defaultLang][link.name]}
+              <span 
+                class={`w-1.5 h-1.5 rounded-full mt-1 transition-colors ${
+                  currentPath === link.href ? "bg-white" : "bg-transparent"
+                }`}
+              ></span>
+            </a>
+            {link.hasDropdown && (
+              <ul class="absolute left-0 top-full mt-0 w-48 bg-gray-800 text-white shadow-lg rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+                {dropdownItems.map((item, idx) => (
+                  <li>
+                    <a
+                      href={item.href}
+                      class={`flex items-center justify-between gap-2 px-4 py-2 hover:bg-gray-700 transition-colors duration-150 
+                        ${idx === 0 ? "rounded-t-lg" : ""} 
+                        ${idx === dropdownItems.length - 1 ? "rounded-b-lg" : ""}`}
+                      data-dropdown-name={item.name}
+                    >
+                      <span>{translations[defaultLang][item.name]}</span>
+                      <img src={item.flag} alt={`${translations[defaultLang][item.name]} flag`} class="w-5 h-4 object-cover ml-2" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      {/* Toggles for Desktop Only */}
+      <div class="hidden md:flex items-center space-x-2" id="toggle-box">
+        <div class="border border-gray-300 rounded-md px-2 py-1">
+          <button id="language-toggle" class="flex items-center space-x-2 focus:outline-none" aria-label="Toggle Language">
+            <i class="fas fa-globe"></i>
+            <span id="language-text">English</span>
+          </button>
+        </div>
+        <button id="theme-toggle" class="text-2xl focus:outline-none w-8 h-8 flex items-center justify-center" aria-label="Toggle Theme">
+          🌞
+        </button>
+      </div>
+
+      {/* Burger Icon - Visible on Mobile */}
+      <button 
+        class="md:hidden text-3xl focus:outline-none" 
+        aria-label="Toggle Menu"
+        id="menu-toggle"
+      >
+        ☰
+      </button>
+    </div>
   </div>
 
   {/* Sidebar for Mobile */}
@@ -91,11 +163,29 @@ const dropdownItems = [
             class={`hover:text-gray-300 text-lg ${
               currentPath === link.href ? "text-white" : "text-gray-400"
             }`}
+            data-link-name={link.name}
           >
-            {link.name}
+            {translations[defaultLang][link.name]}
           </a>
         </li>
       ))}
+      <li>
+        <button 
+          id="mobile-language-toggle" 
+          class="flex items-center space-x-2 text-lg hover:text-gray-300"
+        >
+          <i class="fas fa-globe"></i>
+          <span id="mobile-language-text">English</span>
+        </button>
+      </li>
+      <li>
+        <button 
+          id="mobile-theme-toggle" 
+          class="text-2xl hover:text-gray-300"
+        >
+          🌞
+        </button>
+      </li>
     </ul>
   </div>
 
@@ -107,39 +197,190 @@ const dropdownItems = [
 </nav>
 
 <style>
+  :root {
+    --bg-light: #ffffff;
+    --bg-dark: #1f2937;
+    --text-light: #000000;
+    --text-dark: #ffffff;
+  }
+
   .navbar {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    margin-bottom: 20px !important; 
-    z-index: 2; 
+    margin-bottom: 20px !important;
+    z-index: 2;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  [data-theme="dark"] .navbar {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+
+  [data-theme="light"] .navbar {
+    background-color: transparent;
+    color: var(--text-dark);
+  }
+
+  html, body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  [data-theme="dark"] {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+
+  [data-theme="light"] {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+  }
+
+  [dir="rtl"] {
+    direction: rtl;
+  }
+
+  [dir="rtl"] .navbar .container {
+    flex-direction: row-reverse;
+  }
+
+  [dir="rtl"] .md\\:flex {
+    flex-direction: row-reverse;
+  }
+
+  [dir="rtl"] .md\\:space-x-6 {
+    margin-right: 0;
+    margin-left: 1.5rem;
+  }
+
+  [dir="rtl"] .group-hover\\:opacity-100 {
+    left: auto;
+    right: 0;
+  }
+
+  [dir="rtl"] .mobile-sidebar {
+    right: auto;
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  [dir="rtl"] .mobile-sidebar:not(.translate-x-full) {
+    transform: translateX(0);
+  }
+
+  #toggle-box {
+    transition: all 0.3s ease;
+  }
+
+  [dir="rtl"] #toggle-box {
+    margin-right: 0;
+    margin-left: 0.5rem;
+  }
+
+  [data-theme="dark"] .border {
+    border-color: #ffffff;
+  }
+
+  [data-theme="light"] .border {
+    border-color: #000000;
   }
 </style>
 
-<script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+<script is:inline client:load>
+  const translations = {
+    en: {
+      Home: 'Home',
+      Education: 'Education',
+      Maps: 'Maps',
+      Library: 'Library',
+      GlobalComparisons: 'Global Comparisons',
+      Articles: 'Articles',
+      AboutUs: 'About Us',
+      Singapore: 'Singapore',
+      SouthKorea: 'South Korea',
+      China: 'China',
+      Brazil: 'Brazil',
+      India: 'India',
+      Germany: 'Germany',
+      Japan: 'Japan',
+      Turkey: 'Turkey',
+    },
+    ar: {
+      Home: 'الرئيسية',
+      Education: 'التعليم',
+      Maps: 'الخرائط',
+      Library: 'المكتبة',
+      GlobalComparisons: 'المقارنات العالمية',
+      Articles: 'المقالات',
+      AboutUs: 'معلومات عنا',
+      Singapore: 'سنغافورة',
+      SouthKorea: 'كوريا الجنوبية',
+      China: 'الصين',
+      Brazil: 'البرازيل',
+      India: 'الهند',
+      Germany: 'ألمانيا',
+      Japan: 'اليابان',
+      Turkey: 'تركيا',
+    },
+  };
+
   document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.getElementById("menu-toggle");
     const mobileSidebar = document.getElementById("mobile-sidebar");
     const overlay = document.getElementById("overlay");
+    const languageToggle = document.getElementById("language-toggle");
+    const languageText = document.getElementById("language-text");
+    const mobileLanguageToggle = document.getElementById("mobile-language-toggle");
+    const mobileLanguageText = document.getElementById("mobile-language-text");
+    const themeToggle = document.getElementById("theme-toggle");
+    const mobileThemeToggle = document.getElementById("mobile-theme-toggle");
 
-    if (!menuToggle || !mobileSidebar || !overlay) {
-      console.error("Required DOM elements are missing.");
-      return;
-    }
+    // Initialize language from localStorage or default to English
+    const savedLanguage = localStorage.getItem("language") || "en";
+    document.documentElement.lang = savedLanguage;
+    document.documentElement.dir = savedLanguage === "ar" ? "rtl" : "ltr";
+    languageText.textContent = savedLanguage === "ar" ? "English" : "العربية";
+    mobileLanguageText.textContent = savedLanguage === "ar" ? "English" : "العربية";
+    document.getElementById("site-name").textContent = savedLanguage === "ar" ? "أيدي متحدة" : "United Hands";
 
+    // Update navigation links and dropdowns with current language
+    document.querySelectorAll("[data-link-name]").forEach((element) => {
+      const linkName = element.getAttribute("data-link-name");
+      element.textContent = translations[savedLanguage][linkName];
+    });
+    document.querySelectorAll("[data-dropdown-name]").forEach((element) => {
+      const dropdownName = element.getAttribute("data-dropdown-name");
+      const span = element.querySelector("span");
+      span.textContent = translations[savedLanguage][dropdownName];
+      const img = element.querySelector("img");
+      img.alt = `${translations[savedLanguage][dropdownName]} flag`;
+    });
+
+    // Initialize theme from localStorage or default to light
+    const savedTheme = localStorage.getItem("theme") || "light";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    themeToggle.textContent = savedTheme === "dark" ? "🌙" : "🌞";
+    mobileThemeToggle.textContent = savedTheme === "dark" ? "🌙" : "🌞";
+
+    // Toggle sidebar
     menuToggle.addEventListener("click", () => {
       mobileSidebar.classList.toggle("translate-x-full");
       overlay.classList.toggle("hidden");
       menuToggle.textContent = mobileSidebar.classList.contains("translate-x-full") ? "☰" : "✕";
     });
 
+    // Close sidebar on overlay click
     overlay.addEventListener("click", () => {
       mobileSidebar.classList.add("translate-x-full");
       overlay.classList.add("hidden");
       menuToggle.textContent = "☰";
     });
 
+    // Close sidebar on link click
     mobileSidebar.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", () => {
         mobileSidebar.classList.add("translate-x-full");
@@ -147,5 +388,44 @@ const dropdownItems = [
         menuToggle.textContent = "☰";
       });
     });
+
+    // Language toggle
+    const toggleLanguage = () => {
+      const newLanguage = document.documentElement.lang === "ar" ? "en" : "ar";
+      document.documentElement.lang = newLanguage;
+      document.documentElement.dir = newLanguage === "ar" ? "rtl" : "ltr";
+      languageText.textContent = newLanguage === "ar" ? "English" : "العربية";
+      mobileLanguageText.textContent = newLanguage === "ar" ? "English" : "العربية";
+      document.getElementById("site-name").textContent = newLanguage === "ar" ? "أيدي متحدة" : "United Hands";
+      localStorage.setItem("language", newLanguage);
+
+      // Update all links and dropdowns
+      document.querySelectorAll("[data-link-name]").forEach((element) => {
+        const linkName = element.getAttribute("data-link-name");
+        element.textContent = translations[newLanguage][linkName];
+      });
+      document.querySelectorAll("[data-dropdown-name]").forEach((element) => {
+        const dropdownName = element.getAttribute("data-dropdown-name");
+        const span = element.querySelector("span");
+        span.textContent = translations[newLanguage][dropdownName];
+        const img = element.querySelector("img");
+        img.alt = `${translations[newLanguage][dropdownName]} flag`;
+      });
+    };
+
+    languageToggle.addEventListener("click", toggleLanguage);
+    mobileLanguageToggle.addEventListener("click", toggleLanguage);
+
+    // Theme toggle
+    const toggleTheme = () => {
+      const newTheme = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", newTheme);
+      themeToggle.textContent = newTheme === "dark" ? "🌙" : "🌞";
+      mobileThemeToggle.textContent = newTheme === "dark" ? "🌙" : "🌞";
+      localStorage.setItem("theme", newTheme);
+    };
+
+    themeToggle.addEventListener("click", toggleTheme);
+    mobileThemeToggle.addEventListener("click", toggleTheme);
   });
 </script>
