@@ -1,16 +1,209 @@
 ---
 import NavBar from "@/components/NavBar.astro";
+
+// Define the DropdownItem interface to match NavBar
+interface DropdownItem {
+  name: string;
+  href: string;
+  flag: string;
+}
+
+// List of countries from NavBar's dropdownItems
+const countries: DropdownItem[] = [
+  { name: 'Singapore', href: '/comparisons/singapore', flag: '/singapore.png' },
+  { name: 'SouthKorea', href: '/comparisons/south-korea', flag: '/south-korea.png' },
+  { name: 'China', href: '/comparisons/china', flag: '/china.png' },
+  { name: 'Brazil', href: '/comparisons/brazil', flag: '/brazil.png' },
+  { name: 'India', href: '/comparisons/india', flag: '/india.png' },
+  { name: 'Germany', href: '/comparisons/germany', flag: '/Germany.png' },
+  { name: 'Japan', href: '/comparisons/japan', flag: '/japan.png' },
+  { name: 'Turkey', href: '/comparisons/turkey', flag: '/turkey.png' },
+];
+
+// Mock article counts (replace with actual data if available)
+const articleCounts: { [key: string]: number } = {
+  Singapore: 19,
+  SouthKorea: 15,
+  China: 22,
+  Brazil: 12,
+  India: 18,
+  Germany: 16,
+  Japan: 20,
+  Turkey: 14,
+};
+
+// Translations to match NavBar
+const translations = {
+  en: {
+    Singapore: 'Singapore',
+    SouthKorea: 'South Korea',
+    China: 'China',
+    Brazil: 'Brazil',
+    India: 'India',
+    Germany: 'Germany',
+    Japan: 'Japan',
+    Turkey: 'Turkey',
+    Articles: 'Articles',
+  },
+  ar: {
+    Singapore: 'سنغافورة',
+    SouthKorea: 'كوريا الجنوبية',
+    China: 'الصين',
+    Brazil: 'البرازيل',
+    India: 'الهند',
+    Germany: 'ألمانيا',
+    Japan: 'اليابان',
+    Turkey: 'تركيا',
+    Articles: 'مقالات',
+  },
+};
+
+// Default language (sync with NavBar)
+const defaultLang = 'en';
 ---
 
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Global Comparisons</title>
-        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-        </head>
-    <body class="bg-darkBackground text-white min-h-screen mt-16">
-        <!-- NavBar -->
-        <NavBar />
-    <body />
-<html />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Global Comparisons</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="text-white min-h-screen mt-16 transition-colors duration-300"
+    data-theme="dark"
+  >
+    <!-- NavBar -->
+    <NavBar />
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+      <h1
+        class="text-4xl font-bold text-center mb-12"
+        data-translation="GlobalComparisons"
+      >
+        {translations[defaultLang].GlobalComparisons || 'Global Comparisons'}
+      </h1>
+
+      <!-- Grid Layout for Country Cards -->
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+      >
+        {
+          countries.map((country) => (
+            <a
+              href={country.href}
+              class="group bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:bg-gray-700 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+            >
+              <div class="relative">
+                <img
+                  src={country.flag}
+                  alt={`${translations[defaultLang][country.name]} flag`}
+                  class="w-full h-32 object-cover"
+                />
+                <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-10 transition-opacity duration-300" />
+              </div>
+              <div class="p-4">
+                <h2
+                  class="text-xl font-semibold mb-2"
+                  data-country-name={country.name}
+                >
+                  {translations[defaultLang][country.name]}
+                </h2>
+                <p class="text-gray-400">
+                  {articleCounts[country.name] || 0}{' '}
+                  {translations[defaultLang].Articles}
+                </p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </main>
+  </body>
+</html>
+
+<style>
+  :root {
+    --bg-dark: #1f2937;
+    --text-dark: #ffffff;
+  }
+
+  [data-theme='dark'] {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+
+  /* Ensure RTL support */
+  [dir='rtl'] .grid {
+    direction: rtl;
+  }
+
+  /* Hover effect for cards */
+  .group:hover img {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+  }
+
+  /* Responsive image */
+  img {
+    transition: transform 0.3s ease;
+  }
+</style>
+
+<script is:inline client:load>
+  // Sync language with NavBar
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedLanguage = localStorage.getItem('language') || 'en';
+    document.documentElement.lang = savedLanguage;
+    document.documentElement.dir = savedLanguage === 'ar' ? 'rtl' : 'ltr';
+
+    const translations = {
+      en: {
+        GlobalComparisons: 'Global Comparisons',
+        Singapore: 'Singapore',
+        SouthKorea: 'South Korea',
+        China: 'China',
+        Brazil: 'Brazil',
+        India: 'India',
+        Germany: 'Germany',
+        Japan: 'Japan',
+        Turkey: 'Turkey',
+        Articles: 'Articles',
+      },
+      ar: {
+        GlobalComparisons: 'المقارنات العالمية',
+        Singapore: 'سنغافورة',
+        SouthKorea: 'كوريا الجنوبية',
+        China: 'الصين',
+        Brazil: 'البرازيل',
+        India: 'الهند',
+        Germany: 'ألمانيا',
+        Japan: 'اليابان',
+        Turkey: 'تركيا',
+        Articles: 'مقالات',
+      },
+    };
+
+    // Update title
+    const titleElement = document.querySelector('[data-translation="GlobalComparisons"]');
+    if (titleElement) {
+      titleElement.textContent = translations[savedLanguage].GlobalComparisons;
+    }
+
+    // Update country names
+    document.querySelectorAll('[data-country-name]').forEach((element) => {
+      const countryName = element.getAttribute('data-country-name');
+      element.textContent = translations[savedLanguage][countryName];
+    });
+
+    // Update article labels
+    document.querySelectorAll('p').forEach((p) => {
+      const text = p.textContent.split(' ')[0];
+      p.textContent = `${text} ${translations[savedLanguage].Articles}`;
+    });
+  });
+</script>

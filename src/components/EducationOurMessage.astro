@@ -1,0 +1,38 @@
+---
+interface Props {
+  videoUrl: string; // YouTube video URL (e.g., https://www.youtube.com/embed/VIDEO_ID)
+}
+
+const { videoUrl } = Astro.props;
+---
+
+<section class="w-full py-8 text-white">
+  <div class="container mx-auto px-4">
+    <!-- Flex container for responsive layout -->
+    <div class="flex flex-col md:flex-row gap-6 items-center">
+      <!-- Left: Text Section -->
+      <div class="w-full md:w-1/2 space-y-4">
+        <h2 class="text-3xl md:text-4xl font-bold leading-tight">
+          Education: Our Collective Duty
+        </h2>
+        <p class="text-base md:text-lg leading-relaxed">
+          Education is our shared responsibility as a society, not the government's. They have no interest in an educated populace—ignorance makes us easier to control and manipulate for their own gain. Waiting for quality education from them is futile! Let’s take charge of our learning!
+        </p>
+      </div>
+
+      <!-- Right: YouTube Video Iframe -->
+      <div class="w-full md:w-1/2">
+        <div class="relative pb-[56.25%] h-0 overflow-hidden rounded-lg">
+          <iframe
+            class="absolute top-0 left-0 w-full h-full"
+            src={videoUrl}
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

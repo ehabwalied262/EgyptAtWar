@@ -59,11 +59,26 @@ const libraryCollection = defineCollection({
   }),
   });
 
+  // const channelsCollection = defineCollection({
+  //   type: 'content',
+  //   schema: z.object({
+  //     category: z.string(),
+  //     title: z.string(),
+  //     channels: z.array(
+  //       z.object({
+  //         name: z.string(),
+  //         channelId: z.string(),
+  //         description: z.string(),
+  //       })
+  //     ),
+  //   }),
+  // });
+
 export const collections = {
   problems: problemsCollection,
   articles: articlesCollection,
   about: aboutCollection,
   presidents: presidentSchema,
   libraryTopics: libraryCollection,
-
+  // channels: channelsCollection,
 };

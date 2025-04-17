@@ -1,0 +1,268 @@
+---
+import { getCollection } from 'astro:content';
+import { useEmblaCarousel } from 'embla-carousel-react';
+
+// تعريف هيكل القنوات
+interface Channel {
+  name: string;
+  channelId: string;
+  description: string;
+}
+
+interface Video {
+  title: string;
+  embedUrl: string;
+  channelName: string;
+}
+
+// الـ Props بقت اختيارية
+interface Props {
+  category?: string; // اختياري
+  title?: string;   // اختياري
+}
+
+const { category, title } = Astro.props;
+
+// جلب كل الأقسام من الـ channels collection
+const channelsEntries = await getCollection('channels');
+
+// إذا تم تمرير category، هنستخدم القسم ده بس، وإلا هنستخدم كل الأقسام
+const filteredChannels = category
+  ? channelsEntries.filter(entry => entry.id === category)
+  : channelsEntries;
+
+// تحضير قايمة لكل قسم وفيديوهاته
+const sections: Array<{
+  category: string;
+  title: string;
+  videos: Video[];
+}> = [];
+
+const API_KEY = 'YOUR_YOUTUBE_API_KEY'; // ضع الـ API Key هنا
+
+for (const entry of filteredChannels) {
+  const { data, body } = entry;
+  const categoryTitle = data.title;
+  const categoryId = data.category;
+
+  // تحليل القنوات من محتوى الملف
+  const channelList: Channel[] = [];
+  const channelRegex = /- \*\*اسم القناة\*\*: (.*?)\s*\n\s*- \*\*Channel ID\*\*: (.*?)\s*\n\s*- \*\*الوصف\*\*: (.*?)(?=\n-|\n##|$)/gs;
+
+  let match;
+  while ((match = channelRegex.exec(body))) {
+    channelList.push({
+      name: match[1],
+      channelId: match[2],
+      description: match[3],
+    });
+  }
+
+  // جلب الفيديوهات من YouTube API لكل قناة
+  const videos: Video[] = [];
+  for (const channel of channelList) {
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channel.channelId}&maxResults=5&order=date&type=video&key=${API_KEY}`
+      );
+      const data = await response.json();
+
+      if (data.items) {
+        const channelVideos = data.items.map((item: any) => ({
+          title: item.snippet.title,
+          embedUrl: `https://www.youtube.com/embed/${item.id.videoId}`,
+          channelName: channel.name,
+        }));
+        videos.push(...channelVideos);
+      }
+    } catch (error) {
+      console.error(`Error fetching videos for channel ${channel.name}:`, error);
+    }
+  }
+
+  sections.push({
+    category: categoryId,
+    title: categoryTitle,
+    videos,
+  });
+}
+---
+
+<!-- Loop over each section (category) -->
+<div class="space-y-12">
+  {sections.map(section => (
+    <section class="w-full py-8 bg-gray-800 text-white">
+      <div class="container mx-auto px-4">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-3xl md:text-4xl font-bold">{section.title}</h2>
+          <a
+            href={`/videos/${section.category}`}
+            class="text-blue-400 hover:text-blue-300 transition text-sm md:text-base"
+          >
+            اعرض المزيد
+          </a>
+        </div>
+
+        <!-- Carousel -->
+        <div class="relative">
+          <div class="embla overflow-hidden" data-embla>
+            <div class="embla__container flex">
+              {section.videos.slice(0, 4).map((video) => (
+                <div class="embla__slide flex-[0_0_100%] md:flex-[0_0_25%] px-2">
+                  <div class="bg-gray-700 rounded-lg overflow-hidden shadow-md">
+                    <div class="relative pb-[56.25%] h-0">
+                      <iframe
+                        class="absolute top-0 left-0 w-full h-full"
+                        src={video.embedUrl}
+                        title={video.title}
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        loading="lazy"
+                      ></iframe>
+                    </div>
+                    <div class="p-4">
+                      <h3 class="text-lg font-semibold truncate">{video.title}</h3>
+                      <p class="text-sm text-gray-400">{video.channelName}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <!-- Navigation Arrows -->
+          <button
+            class="embla__prev absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-600 text-white p-2 rounded-full hover:bg-gray-500 transition"
+            data-embla-prev
+          >
+            ←
+          </button>
+          <button
+            class="embla__next absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-600 text-white p-2 rounded-full hover:bg-gray-500 transition"
+            data-embla-next
+          >
+            →
+          </button>
+        </div>
+
+        <!-- Suggest Channel Button -->
+        <div class="mt-4 text-right">
+          <button
+            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+            data-suggest-channel
+          >
+            اقترح قناة
+          </button>
+        </div>
+      </div>
+    </section>
+  ))}
+</div>
+
+<!-- Modal for Suggesting Channels -->
+<div
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+  data-suggest-modal
+>
+  <div class="bg-white p-6 rounded-lg w-full max-w-md">
+    <h3 class="text-xl font-bold mb-4">اقترح قناة يوتيوب</h3>
+    <form class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">اسم القناة</label>
+        <input
+          type="text"
+          class="w-full p-2 border border-gray-300 rounded-lg"
+          placeholder="اسم القناة"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">رابط القناة</label>
+        <input
+          type="url"
+          class="w-full p-2 border border-gray-300 rounded-lg"
+          placeholder="https://youtube.com/@channel"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">لماذا هذه القناة؟</label>
+        <textarea
+          class="w-full p-2 border border-gray-300 rounded-lg"
+          rows="3"
+          placeholder="اشرح لماذا تعتقد أن هذه القناة مفيدة"
+        ></textarea>
+      </div>
+      <div class="flex justify-end gap-2">
+        <button
+          type="button"
+          class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition"
+          data-close-modal
+        >
+          إغلاق
+        </button>
+        <button
+          type="submit"
+          class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+        >
+          إرسال
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Initialize Embla Carousel for each carousel
+  document.querySelectorAll('[data-embla]').forEach((emblaNode) => {
+    const embla = EmblaCarousel(emblaNode);
+    const prevBtn = emblaNode.parentElement.querySelector('[data-embla-prev]');
+    const nextBtn = emblaNode.parentElement.querySelector('[data-embla-next]');
+
+    prevBtn.addEventListener('click', () => embla.scrollPrev());
+    nextBtn.addEventListener('click', () => embla.scrollNext());
+  });
+
+  // Modal Toggle
+  const suggestBtns = document.querySelectorAll('[data-suggest-channel]');
+  const modal = document.querySelector('[data-suggest-modal]');
+  const closeBtn = document.querySelector('[data-close-modal]');
+
+  suggestBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+
+  // Close modal when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('hidden');
+    }
+  });
+</script>
+
+<style>
+  .embla {
+    position: relative;
+  }
+
+  .embla__container {
+    display: flex;
+    will-change: transform;
+  }
+
+  .embla__slide {
+    position: relative;
+    min-width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .embla__slide {
+      min-width: 25%;
+    }
+  }
+</style>
