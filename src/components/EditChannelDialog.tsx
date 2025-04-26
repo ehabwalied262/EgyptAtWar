@@ -1,29 +1,28 @@
 import { useState } from 'react';
+import type { ChannelConfig } from './types'; // Use import type for ChannelConfig
 
-interface AddChannelDialogProps {
+interface EditChannelDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (description: string, tags: string[]) => void;
-  newChannelLink: string;
+  onSave: (channel: ChannelConfig) => void;
+  channel: ChannelConfig;
 }
 
-const AddChannelDialog = ({ isOpen, onClose, onSubmit, newChannelLink }: AddChannelDialogProps) => {
-  const [description, setDescription] = useState('');
-  const [tags, setTags] = useState('');
+const EditChannelDialog = ({ isOpen, onClose, onSave, channel }: EditChannelDialogProps) => {
+  const [description, setDescription] = useState(channel.description || '');
+  const [tags, setTags] = useState(channel.badges?.join(', ') || '');
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = () => {
+  const handleSave = () => {
     if (!description) {
-      setError('Please provide a reason why this channel is useful.');
+      setError('Please provide a description.');
       return;
     }
     const tagArray = tags
       .split(',')
       .map((tag) => tag.trim())
       .filter((tag) => tag);
-    onSubmit(description, tagArray);
-    setDescription('');
-    setTags('');
+    onSave({ ...channel, description, badges: tagArray });
     setError(null);
   };
 
@@ -47,12 +46,12 @@ const AddChannelDialog = ({ isOpen, onClose, onSubmit, newChannelLink }: AddChan
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-gray-100 p-6 rounded-lg max-w-md w-full animate-dialog-open">
-        <h3 className="text-lg font-semibold mb-4 text-gray-800">Why is this channel useful?</h3>
-        <p className="text-sm text-gray-600 mb-2">Channel: {newChannelLink}</p>
+        <h3 className="text-lg font-semibold mb-4 text-gray-800">Edit Channel</h3>
+        <p className="text-sm text-gray-600 mb-2">Channel: {channel.handle}</p>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Explain why this channel is beneficial (max 200 characters)"
+          placeholder="Edit description (max 200 characters)"
           maxLength={200}
           className="w-full p-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
           rows={4}
@@ -62,7 +61,7 @@ const AddChannelDialog = ({ isOpen, onClose, onSubmit, newChannelLink }: AddChan
           value={tags}
           onChange={handleTagsInput}
           onKeyDown={handleTagsKeyDown}
-          placeholder="Enter tags (e.g., Independent, Science-Based)"
+          placeholder="Edit tags (e.g., Independent, Science-Based)"
           className="w-full p-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
         />
         {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
@@ -74,10 +73,10 @@ const AddChannelDialog = ({ isOpen, onClose, onSubmit, newChannelLink }: AddChan
             Cancel
           </button>
           <button
-            onClick={handleSubmit}
+            onClick={handleSave}
             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
           >
-            Submit
+            Save
           </button>
         </div>
       </div>
@@ -85,4 +84,4 @@ const AddChannelDialog = ({ isOpen, onClose, onSubmit, newChannelLink }: AddChan
   );
 };
 
-export default AddChannelDialog;
+export default EditChannelDialog;
