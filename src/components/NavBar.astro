@@ -83,7 +83,7 @@ const defaultLang = 'en';
 
 <nav class="navbar text-white py-4 px-6 bg-transparent mb-8">
   <div class="container mx-auto flex justify-between items-center">
-    <a href="/" class="text-2xl font-bold" id="site-name">United Hands</a>
+    <a href="/" class="text-2xl font-bold" id="site-name">Bosla</a>
 
     <div class="flex items-center space-x-4">
       {/* Navigation Links for Desktop */}
@@ -345,7 +345,7 @@ const defaultLang = 'en';
     document.documentElement.dir = savedLanguage === "ar" ? "rtl" : "ltr";
     languageText.textContent = savedLanguage === "ar" ? "English" : "العربية";
     mobileLanguageText.textContent = savedLanguage === "ar" ? "English" : "العربية";
-    document.getElementById("site-name").textContent = savedLanguage === "ar" ? "أيدي متحدة" : "United Hands";
+    document.getElementById("site-name").textContent = savedLanguage === "ar" ? "أيدي متحدة" : "Bosla";
 
     // Update navigation links and dropdowns with current language
     document.querySelectorAll("[data-link-name]").forEach((element) => {
@@ -396,7 +396,7 @@ const defaultLang = 'en';
       document.documentElement.dir = newLanguage === "ar" ? "rtl" : "ltr";
       languageText.textContent = newLanguage === "ar" ? "English" : "العربية";
       mobileLanguageText.textContent = newLanguage === "ar" ? "English" : "العربية";
-      document.getElementById("site-name").textContent = newLanguage === "ar" ? "أيدي متحدة" : "United Hands";
+      document.getElementById("site-name").textContent = newLanguage === "ar" ? "أيدي متحدة" : "Bosla";
       localStorage.setItem("language", newLanguage);
 
       // Update all links and dropdowns

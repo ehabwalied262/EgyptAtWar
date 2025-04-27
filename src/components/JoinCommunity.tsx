@@ -3,15 +3,15 @@ const JoinCommunity = () => {
       <div className="join-community-container">
         {/* Add this CDN to your index.html <head> if not already included */}
         <head>
-                    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         </head>
         <style>
           {`
             .join-community-container {
-              width: 400px; /* Rectangle width */
+              width: 80%; /* Take most of the screen width */
+              max-width: 1200px; /* Max width for larger screens */
               height: 250px; /* Rectangle height */
-              background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%); /* Updated gradient */
+              background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%); /* Updated gradient */
               border: 2px solid #fff; /* Clear border */
               border-radius: 15px; /* Rounded corners */
               box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); /* Subtle glow */
@@ -21,6 +21,7 @@ const JoinCommunity = () => {
               justify-content: center;
               padding: 20px;
               margin: 0 auto; /* Center the component */
+              margin-bottom: 16px; /* Add margin bottom */
               color: white;
               text-align: center;
               transition: all 0.3s ease;
@@ -62,9 +63,10 @@ const JoinCommunity = () => {
             }
             @media (max-width: 640px) {
               .join-community-container {
-                width: 300px;
+                width: 90%; /* Slightly less wide on mobile */
                 height: 200px;
                 padding: 15px;
+                margin-bottom: 16px; /* Keep margin bottom */
               }
               .join-community-container h2 {
                 font-size: 20px;

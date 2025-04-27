@@ -5,6 +5,7 @@ import NavBar from "@/components/NavBar.astro";
 import YouTubeCarousel from "@/components/YouTubeCarousel";
 import FeaturedChannels from "@/components/FeaturedChannels";
 import JoinCommunity from "@/components/JoinCommunity";
+import Footer from "@/components/Footer.astro";
 ---
 
 <html lang="en">
@@ -26,5 +27,6 @@ import JoinCommunity from "@/components/JoinCommunity";
         <FeaturedChannels client:only />
 
         <JoinCommunity client:load />
+        <Footer />
     <body />
 <html />
